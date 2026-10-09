@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إضافة قصة إلى رفوف</title>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--peach:#fae7d4;--orange:#d5753a;--navy:#25234f;--blue:#3f6b9c}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Readex Pro",system-ui,sans-serif;background:var(--peach);color:var(--navy)}
+main{max-width:720px;margin:0 auto;padding:32px 16px 60px}
+h1{color:var(--orange);font-size:clamp(32px,6vw,48px);margin:0 0 6px}
+.card{background:#fff;border-radius:20px;padding:22px;margin:18px 0;box-shadow:0 6px 0 rgba(120,70,30,.12)}
+label{display:block;font-weight:600;margin:14px 0 6px}
+input[type=text]{width:100%;font:inherit;padding:12px 14px;border:2px solid #ead3bd;border-radius:12px}
+input[type=file]{font:inherit}
+.btn{background:var(--orange);color:#fff;border:0;border-radius:999px;padding:14px 28px;font:inherit;font-weight:700;font-size:18px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.btn:disabled{opacity:.5}
+progress{width:100%;height:16px;accent-color:var(--orange)}
+pre{direction:ltr;text-align:left;background:#25234f;color:#fbe8d5;padding:14px;border-radius:12px;white-space:pre-wrap;font-size:14px}
+ol li{margin:6px 0;line-height:1.7}
+small{color:#8a5a3a}
+#thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+#thumbs img{height:70px;border-radius:4px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+</style>
+</head>
+<body>
+<main>
+  <h1>إضافة قصة جديدة</h1>
+  <p>اختاري ملف القصة (PDF)، فتتحوّل صفحاته إلى صور جاهزة للموقع داخل متصفحك، من غير رفع الملف إلى أي مكان.</p>
+
+  <div class="card">
+    <label>ملف القصة (PDF)</label>
+    <input type="file" id="pdf" accept="application/pdf">
+    <label>عنوان القصة</label>
+    <input type="text" id="title" placeholder="مثال: الأرنب الذي أراد أن يطير">
+    <label>اسم المؤلف/ة</label>
+    <input type="text" id="author" placeholder="مثال: مزون الكلبانية">
+    <label>اسم المجلد بالإنجليزية (حروف صغيرة بلا مسافات)</label>
+    <input type="text" id="slug" placeholder="مثال: arnab" dir="ltr">
+    <p style="margin-top:20px"><button class="btn" id="go">حوّلي القصة ⬇</button></p>
+    <progress id="bar" value="0" max="1" hidden></progress>
+    <div id="thumbs"></div>
+  </div>
+
+  <div class="card" id="after" hidden>
+    <h3 style="margin-top:0">الخطوة التالية</h3>
+    <ol>
+      <li>نزل ملف مضغوط باسم المجلد. فكّي ضغطه، وضعي المجلد داخل مجلد <b>books</b> في مستودع الموقع على GitHub.</li>
+      <li>افتحي ملف <b>index.html</b> في GitHub، وابحثي عن <b>const BOOKS</b>، والصقي هذا السطر قبل علامة <b>];</b>:</li>
+    </ol>
+    <pre id="line"></pre>
+    <small>بعد الحفظ تظهر القصة على الرف خلال دقيقة أو دقيقتين.</small>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+const $ = s => document.querySelector(s);
+const toBlob = (c, q) => new Promise(r => c.toBlob(r, "image/webp", q));
+$("#go").onclick = async () => {
+  const f = $("#pdf").files[0], title = $("#title").value.trim(), author = $("#author").value.trim();
+  const slug = $("#slug").value.trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
+  if (!f || !title || !author || !slug) { alert("رجاءً املئي كل الحقول واختاري الملف."); return; }
+  $("#go").disabled = true; $("#bar").hidden = false; $("#thumbs").innerHTML = "";
+  const pdf = await pdfjsLib.getDocument({ data: await f.arrayBuffer() }).promise;
+  const zip = new JSZip(), dir = zip.folder(slug); let ratio = 1;
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i), v1 = page.getViewport({ scale: 1 });
+    const scale = 1500 / Math.max(v1.width, v1.height), vp = page.getViewport({ scale });
+    const c = document.createElement("canvas"); c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+    await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+    if (i === 1) {
+      ratio = c.width / c.height;
+      const t = document.createElement("canvas"), k = 1;
+      t.width = Math.round(c.width * k); t.height = Math.round(c.height * k);
+      t.getContext("2d").drawImage(c, 0, 0, t.width, t.height);
+      dir.file("cover.webp", await toBlob(t, .9));
+    }
+    const b = await toBlob(c, .8); dir.file(String(i).padStart(2, "0") + ".webp", b);
+    const im = new Image(); im.src = URL.createObjectURL(b); $("#thumbs").appendChild(im);
+    $("#bar").value = i / pdf.numPages;
+  }
+  const out = await zip.generateAsync({ type: "blob" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(out); a.download = slug + ".zip"; a.click();
+  $("#line").textContent = `  { id:"${slug}", title:"${title}", author:"${author}", pages:${pdf.numPages}, ratio:${ratio.toFixed(4)} },`;
+  $("#after").hidden = false; $("#go").disabled = false;
+};
+</script>
+</body>
+</html>
