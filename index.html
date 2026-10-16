@@ -811,9 +811,9 @@ function renderRevs(b){
   curSheet = b; const box = $("#srevs");
   if (!REV_ON){ box.style.display = "none"; return; }
   box.style.display = "";
-  const list = approved(b.id), my = mine(b.id), {n, avg} = stats(b.id);
+  const list = approved(b.id), {n, avg} = stats(b.id);
   box.innerHTML = `<div class="revs-head"><h4>آراء القرّاء</h4>${n ? `<div class="avg"><big>${AR1(avg)}</big>${[1,2,3,4,5].map(i => star(i <= Math.round(avg))).join("")}<span>${AR(n)} ${plural(n)}</span></div>` : ""}<button class="btn soft" id="addRev">✎ أضف رأيك</button></div>
-    ${n || my.length ? `<div class="notes-row">${my.map(r => noteHTML(r, true)).join("")}${list.map(r => noteHTML(r)).join("")}</div>`
+    ${n ? `<div class="notes-row">${list.map(r => noteHTML(r)).join("")}</div>`
        : `<div class="empty">لا توجد آراء بعد. كن أوّل من يكتب رأيه في هذه القصة!</div>`}<div id="sForm"></div>`;
   $("#addRev").onclick = () => { showForm($("#sForm"), b, store.get("stars", {})[b.id] || 0, false); $("#sForm").scrollIntoView({behavior:"smooth", block:"nearest"}); };
 }
