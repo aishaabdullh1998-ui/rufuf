@@ -327,6 +327,59 @@ footer{background:var(--sandbg)}
 .confetti i{position:absolute;top:-24px;font-style:normal;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01s!important}}
+
+/* ---------- REVIEWS (نموذج) ---------- */
+.proto-unused{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:80;display:flex;gap:10px;align-items:center;background:#2b2a28;color:#fff;border-radius:999px;padding:8px 10px 8px 18px;font:500 14px var(--sans);box-shadow:0 10px 30px -10px rgba(0,0,0,.5);white-space:nowrap}
+.proto button{border:0;border-radius:999px;background:var(--sun);color:var(--ink);font:700 14px var(--sans);padding:8px 14px;cursor:pointer}
+.tile .score{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:4px;font:600 14px var(--sans);color:var(--muted)}
+.tile .score b{display:inline;font:700 15px var(--sans);color:#c88a1a}
+.revs{grid-column:1/-1;border-top:2px dashed #ead9c4;padding-top:20px}
+.revs-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.revs-head h4{margin:0;font:800 24px var(--round)}
+.avg{display:flex;align-items:center;gap:10px;font:600 15px var(--sans);color:var(--muted)}
+.avg big{font:700 32px var(--sans);color:var(--ink)}
+.sheet .box>*{min-width:0}
+.avg .hstar{width:22px}
+.notes-row{display:flex;gap:16px;overflow-x:auto;padding:10px 4px 16px;scroll-snap-type:x mandatory}
+.rnote{flex:0 0 240px;scroll-snap-align:start;position:relative;background:#fffef8;padding:26px 16px 14px;box-shadow:0 10px 18px -12px rgba(40,50,20,.5);
+  background-image:repeating-linear-gradient(0deg,transparent 0 27px,#d6e3ec 27px 28px);background-position:0 22px}
+.rnote::before{content:"";position:absolute;top:-8px;left:50%;width:64px;height:18px;transform:translateX(-50%);background:rgba(255,207,110,.75)}
+.rnote .st{display:flex;gap:2px}.rnote .st .hstar{width:18px}
+.rnote p{margin:6px 0 8px;font:500 16px/28px var(--sans);color:#2f3f5e}
+.rnote .tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
+.rnote .tags span{font:600 11px var(--sans);background:#e8f2f1;color:var(--sea);border-radius:999px;padding:2px 8px}
+.rnote .who{font:700 13px var(--sans);color:var(--coral2)}
+.rnote .eg{position:absolute;top:6px;left:8px;font:600 11px var(--sans);color:var(--coral2)}
+.empty{color:var(--muted);font-size:15px;padding:10px 0}
+.rform{background:#f6efe4;border-radius:22px;padding:18px;margin-top:6px;text-align:right}
+.rform h5{margin:0 0 10px;font:800 20px var(--round)}
+.rform .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.rform input,.rform select,.rform textarea{width:100%;font:500 16px var(--sans);border:2px solid #e6d8c5;border-radius:14px;padding:10px 12px;background:#fff;color:var(--ink)}
+.rform textarea{resize:none;height:84px}
+.rform .chipsel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.rform .chipsel button{border:2px solid #e6d8c5;background:#fff;border-radius:999px;padding:7px 12px;font:600 14px var(--sans);cursor:pointer;color:var(--ink)}
+.rform .chipsel button.on{background:var(--sea);border-color:var(--sea);color:#fff}
+.rform .pick{display:flex;gap:4px;margin-bottom:12px}.rform .pick button{background:none;border:0;padding:0;width:38px;cursor:pointer}
+.rform .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}
+.rform .cnt{font:500 13px var(--muted)}
+.rform .ok{display:flex;gap:12px;align-items:center;font:600 16px var(--sans);color:var(--sea);padding:6px 0}
+.rform .ok i{font-style:normal;font-size:30px}
+.rform .err{color:var(--coral2);font:600 14px var(--sans);min-height:20px}
+.done .card{max-height:calc(100vh - 28px);overflow:auto}
+.done .rform{margin:4px 0 16px}
+/* teacher panel */
+.tpanel{position:fixed;inset:0;z-index:95;display:none;place-items:center;background:rgba(43,42,40,.5);padding:14px}
+.tpanel.on{display:grid}
+.tpanel .box{background:#fff;border-radius:24px;width:min(760px,100%);max-height:calc(100vh - 28px);overflow:auto;padding:24px}
+.tpanel h3{margin:0 0 4px;font:800 26px var(--round)}
+.tpanel .sub{color:var(--muted);margin:0 0 16px;font-size:15px}
+.tpanel table{width:100%;border-collapse:collapse;font:500 14px var(--sans)}
+.tpanel th{text-align:right;background:#f2ebe0;padding:8px;font-weight:700}
+.tpanel td{padding:8px;border-bottom:1px solid #eee;vertical-align:top}
+.tpanel td button{border:0;border-radius:10px;padding:6px 10px;font:700 13px var(--sans);cursor:pointer;margin:2px}
+.tpanel .ap{background:#d9efe9;color:var(--sea)}.tpanel .rj{background:#fbe1d8;color:var(--coral2)}
+.tpanel .close{float:left;border:0;background:#f2ebe0;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:18px}
+@media (max-width:600px){.rform .row2{grid-template-columns:1fr}.proto{font-size:12px}}
 </style>
 </head>
 <body>
@@ -477,6 +530,7 @@ footer{background:var(--sandbg)}
       <p class="blurb" id="sblurb"></p>
       <div class="acts" id="sacts"></div>
     </div>
+    <section class="revs" id="srevs"></section>
   </div>
 </div>
 
@@ -509,6 +563,7 @@ footer{background:var(--sandbg)}
       <p>كيف كانت القصة؟ قيّمها بالنجوم</p>
       <div class="rate" id="rStars"></div>
       <div class="rate-msg" id="rMsg"></div>
+      <div id="rForm"></div>
       <div class="row"><button class="btn" id="rAgain">اقرأها مرة أخرى</button><button class="btn soft" id="rBack">قصة أخرى</button></div>
     </div>
   </div>
@@ -622,7 +677,7 @@ function renderShelf(){
   BOOKS.forEach(b => {
     const el = document.createElement("button"); el.className = "tile"; el.dataset.tag = b.tag;
     el.innerHTML = `<div class="box">${done[b.id] ? '<span class="badge">★ قرأتُها</span>' : ""}${coverBox(b)}</div><div class="plank"></div>
-      <div class="meta"><div class="au">${b.author}</div><b>${b.title}</b></div>`;
+      <div class="meta"><div class="au">${b.author}</div><b>${b.title}</b>${scoreLine(b)}</div>`;
     el.onclick = () => openSheet(b);
     sh.appendChild(el);
   });
@@ -715,11 +770,89 @@ function openSheet(b){
   const go = document.createElement("button"); go.className = "btn"; go.textContent = mid ? "📖 تابِع القراءة" : "📖 اقرأ القصة";
   go.onclick = () => { closeSheet(); openReader(b, mid ? prog : 0); }; acts.appendChild(go);
   if (mid){ const s = document.createElement("button"); s.className = "btn soft"; s.textContent = "من البداية"; s.onclick = () => { closeSheet(); openReader(b, 0); }; acts.appendChild(s); }
+  renderRevs(b);
   sheet.classList.add("on"); document.body.style.overflow = "hidden";
 }
 function closeSheet(){ sheet.classList.remove("on"); document.body.style.overflow = ""; }
 $("#sx").onclick = closeSheet;
 sheet.onclick = e => { if (e.target === sheet) closeSheet(); };
+
+
+/* ================= التقييمات والتعليقات =================
+   يُرسَل كل رأي إلى جدول Google Sheets الخاص بالمكتبة (عبر Apps Script)،
+   ولا يظهر في الموقع إلا بعد أن تضع المعلّمة علامة ✓ في عمود «معتمد».
+   ضعي هنا رابط تطبيق الويب بعد نشره من Apps Script: */
+const REVIEWS_URL = "https://script.google.com/macros/s/AKfycbyMgamAVAzYCCGIbx0YZiIvoCUKs0s9TfILRfpVvwVUvoWfJOGMqV6AsVsM3xCqjkgduw/exec";
+const LIKES = ["أحببتُ الشخصيات", "النهاية مدهشة", "تعلّمتُ درسًا جميلًا", "الرسومات رائعة", "أضحكتني", "أريد جزءًا ثانيًا"];
+const WHO = ["طالب/ة في الصف الأول", "طالب/ة في الصف الثاني", "طالب/ة في الصف الثالث", "طالب/ة في الصف الرابع", "وليّ أمر", "معلّم/ة"];
+let REVIEWS = [];                                   // approved reviews from the sheet
+const REV_ON = !!REVIEWS_URL;
+async function loadReviews(){
+  if (!REV_ON) return;
+  try { const c = JSON.parse(sessionStorage.getItem("rufuf-revs") || "null"); if (c && Date.now() - c.at < 120000){ REVIEWS = c.list; renderShelf(); return; } } catch(e){}
+  try {
+    const r = await fetch(REVIEWS_URL + "?action=list", { cache:"no-store" }); const d = await r.json();
+    REVIEWS = Array.isArray(d.reviews) ? d.reviews : [];
+    try { sessionStorage.setItem("rufuf-revs", JSON.stringify({ at:Date.now(), list:REVIEWS })); } catch(e){}
+    renderShelf(); if (sheet.classList.contains("on") && curSheet) renderRevs(curSheet);
+  } catch(e){}
+}
+function approved(id){ return REVIEWS.filter(r => r.id === id); }
+function mine(id){ return store.get("rev-mine", []).filter(r => r.id === id && !REVIEWS.some(x => x.k === r.k)); }
+function stats(id){ const a = approved(id); return { n:a.length, avg: a.length ? a.reduce((x,r) => x + (+r.s || 0), 0) / a.length : 0 }; }
+const AR1 = x => AR(x.toFixed(1)).replace(".", ".");
+const plural = n => n === 1 ? "رأي" : n === 2 ? "رأيان" : n <= 10 ? "آراء" : "رأيًا";
+function scoreLine(b){ if (!REV_ON) return ""; const {n, avg} = stats(b.id); return n ? `<div class="score"><b>★ ${AR1(avg)}</b> · ${AR(n)} ${plural(n)}</div>` : `<div class="score">كن أوّل من يكتب رأيه ✎</div>`; }
+const esc = s => String(s || "").replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const noteHTML = (r, pending) => `<div class="rnote">${pending ? '<span class="eg">بانتظار المراجعة</span>' : ""}<div class="st">${[1,2,3,4,5].map(k => star(k <= +r.s)).join("")}</div>
+  <div class="tags">${(r.t || []).map(t => `<span>${esc(t)}</span>`).join("")}</div>${r.m ? `<p>${esc(r.m)}</p>` : ""}<div class="who">${esc(r.n)} · ${esc(r.w)}</div></div>`;
+let curSheet = null;
+function renderRevs(b){
+  curSheet = b; const box = $("#srevs");
+  if (!REV_ON){ box.style.display = "none"; return; }
+  box.style.display = "";
+  const list = approved(b.id), my = mine(b.id), {n, avg} = stats(b.id);
+  box.innerHTML = `<div class="revs-head"><h4>آراء القرّاء</h4>${n ? `<div class="avg"><big>${AR1(avg)}</big>${[1,2,3,4,5].map(i => star(i <= Math.round(avg))).join("")}<span>${AR(n)} ${plural(n)}</span></div>` : ""}<button class="btn soft" id="addRev">✎ أضف رأيك</button></div>
+    ${n || my.length ? `<div class="notes-row">${my.map(r => noteHTML(r, true)).join("")}${list.map(r => noteHTML(r)).join("")}</div>`
+       : `<div class="empty">لا توجد آراء بعد. كن أوّل من يكتب رأيه في هذه القصة!</div>`}<div id="sForm"></div>`;
+  $("#addRev").onclick = () => { showForm($("#sForm"), b, store.get("stars", {})[b.id] || 0, false); $("#sForm").scrollIntoView({behavior:"smooth", block:"nearest"}); };
+}
+function showForm(slot, b, rating, inReader){
+  if (!REV_ON){ slot.innerHTML = ""; return; }
+  let r = rating, tags = [];
+  slot.innerHTML = `<div class="rform"><h5>${inReader ? "اكتب رأيك في القصة" : "أضف رأيك"}</h5>
+    ${inReader ? "" : `<div class="pick" id="fpick"></div>`}
+    <div class="row2"><input id="fName" maxlength="20" placeholder="اسمك الأول" autocomplete="off"><select id="fWho"><option value="">من أنت؟</option>${WHO.map(w => `<option>${w}</option>`).join("")}</select></div>
+    <div class="chipsel" id="fTags">${LIKES.map(l => `<button type="button">${l}</button>`).join("")}</div>
+    <textarea id="fMsg" maxlength="140" placeholder="اكتب جملة قصيرة عن القصة…"></textarea>
+    <input id="fWeb" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+    <div class="err" id="fErr"></div>
+    <div class="foot"><span class="cnt" id="fCnt">٠ / ١٤٠</span><button class="btn" id="fSend">إرسال الرأي</button></div></div>`;
+  const q = sel => slot.querySelector(sel);
+  if (!inReader){ const pk = q("#fpick"); const draw = () => { pk.innerHTML = [1,2,3,4,5].map(i => `<button type="button" aria-label="${AR(i)} نجوم">${star(i <= r)}</button>`).join(""); [...pk.children].forEach((bt,i) => bt.onclick = () => { r = i + 1; draw(); }); }; draw(); }
+  [...q("#fTags").children].forEach(bt => bt.onclick = () => { bt.classList.toggle("on"); tags = [...q("#fTags").children].filter(x => x.classList.contains("on")).map(x => x.textContent); });
+  q("#fMsg").oninput = e => q("#fCnt").textContent = `${AR(e.target.value.length)} / ١٤٠`;
+  q("#fSend").onclick = async () => {
+    const n = q("#fName").value.trim(), w = q("#fWho").value, m = q("#fMsg").value.trim();
+    if (!r) return q("#fErr").textContent = "اختر عدد النجوم أولًا.";
+    if (!n || !w) return q("#fErr").textContent = "اكتب اسمك الأول واختر من أنت.";
+    if (m.length < 3 && !tags.length) return q("#fErr").textContent = "اختر ما أعجبك أو اكتب جملة قصيرة.";
+    const last = +store.get("rev-last", 0); if (Date.now() - last < 60000) return q("#fErr").textContent = "أرسلتَ رأيًا قبل لحظات، انتظر دقيقة ثم أعد المحاولة.";
+    const k = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    const rec = { k, id:b.id, title:b.title, n, w, s:r, t:tags, m, hp:q("#fWeb").value };
+    q("#fSend").disabled = true; q("#fSend").textContent = "جارٍ الإرسال…";
+    try {
+      await fetch(REVIEWS_URL, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify(rec) });
+      const my = store.get("rev-mine", []); my.push({ k, id:b.id, n, w, s:r, t:tags, m }); store.set("rev-mine", my); store.set("rev-last", Date.now());
+      slot.innerHTML = `<div class="rform"><div class="ok"><i>🌱</i><span>شكرًا يا ${esc(n)}! وصل رأيك، وسيظهر على الرف بعد مراجعة المعلّمة.</span></div></div>`;
+      pop(5); if (!inReader) setTimeout(() => renderRevs(b), 2200);
+    } catch(e){
+      q("#fSend").disabled = false; q("#fSend").textContent = "إرسال الرأي";
+      q("#fErr").textContent = "تعذّر الإرسال، تأكّد من اتصالك بالإنترنت ثم حاول مرة أخرى.";
+    }
+  };
+}
+loadReviews();
 
 /* ================= FLIP-BOOK READER =================
    Arabic book, always two facing pages once open.
@@ -838,10 +971,11 @@ const MSG = ["", "شكرًا لك! 🌱", "جميل! 🌼", "رائع جدًا! 
 function finish(){
   const b = R.book, done = store.get("done", {}); done[b.id] = 1; store.set("done", done);
   $("#rDone").classList.add("on"); confetti(); cheer();
+  $("#rForm").innerHTML = "";
   const stars = store.get("stars", {}), wrap = $("#rStars"); wrap.innerHTML = ""; $("#rMsg").textContent = stars[b.id] ? MSG[stars[b.id]] : "";
   for (let i = 1; i <= 5; i++){
     const s = document.createElement("button"); s.innerHTML = star(i <= (stars[b.id] || 0)); s.setAttribute("aria-label", AR(i) + " نجوم");
-    s.onclick = () => { [...wrap.children].forEach((c,j) => c.querySelector(".hstar").classList.toggle("on", j < i)); stars[b.id] = i; store.set("stars", stars); $("#rMsg").textContent = MSG[i]; pop(i); };
+    s.onclick = () => { [...wrap.children].forEach((c,j) => c.querySelector(".hstar").classList.toggle("on", j < i)); stars[b.id] = i; store.set("stars", stars); $("#rMsg").textContent = MSG[i]; pop(i); showForm($("#rForm"), b, i, true); };
     wrap.appendChild(s);
   }
 }
