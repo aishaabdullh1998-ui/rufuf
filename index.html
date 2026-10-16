@@ -786,6 +786,12 @@ const REVIEWS_URL = "https://script.google.com/macros/s/AKfycbz8nBnLQjZpmi9p1_lV
 const LIKES = ["أحببتُ الشخصيات", "النهاية مدهشة", "تعلّمتُ درسًا جميلًا", "الرسومات رائعة", "أضحكتني", "أريد جزءًا ثانيًا"];
 const WHO = ["طالب/ة في الصف الأول", "طالب/ة في الصف الثاني", "طالب/ة في الصف الثالث", "طالب/ة في الصف الرابع", "وليّ أمر", "معلّم/ة"];
 let REVIEWS = [];                                   // approved reviews from the sheet
+/* يُرسَل كل شيء بطلب GET (الأضمن في Safari وكل المتصفحات)، مع POST احتياطيًا */
+function sendToSheet(data){
+  const url = REVIEWS_URL + "?d=" + encodeURIComponent(JSON.stringify(data)) + "&_=" + Date.now();
+  return fetch(url, { mode:"no-cors", cache:"no-store", keepalive:true }).catch(() =>
+    fetch(REVIEWS_URL, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify(data) }));
+}
 const REV_ON = !!REVIEWS_URL;
 async function loadReviews(){
   if (!REV_ON) return;
@@ -842,7 +848,7 @@ function showForm(slot, b, rating, inReader){
     const rec = { k, id:b.id, title:b.title, n, w, s:r, t:tags, m, hp:q("#fWeb").value };
     q("#fSend").disabled = true; q("#fSend").textContent = "جارٍ الإرسال…";
     try {
-      await fetch(REVIEWS_URL, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify(rec) });
+      await sendToSheet(rec);
       const my = store.get("rev-mine", []); my.push({ k, id:b.id, n, w, s:r, t:tags, m }); store.set("rev-mine", my); store.set("rev-last", Date.now());
       slot.innerHTML = `<div class="rform"><div class="ok"><i>🌱</i><span>شكرًا يا ${esc(n)}! وصل رأيك، وسيظهر على الرف بعد مراجعة المعلّمة.</span></div></div>`;
       pop(5); if (!inReader) setTimeout(() => renderRevs(b), 2200);
@@ -859,7 +865,7 @@ loadReviews();
 if (location.hash === "#me"){ store.set("me", 1); history.replaceState(null, "", location.pathname); }
 function track(data){
   if (!REV_ON || store.get("me", 0)) return;
-  try { fetch(REVIEWS_URL, { method:"POST", mode:"no-cors", keepalive:true, headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify(data) }); } catch(e){}
+  try { sendToSheet(data); } catch(e){}
 }
 (function(){
   let seen = false; try { seen = !!sessionStorage.getItem("rufuf-visit"); sessionStorage.setItem("rufuf-visit", "1"); } catch(e){}
