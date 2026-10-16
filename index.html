@@ -854,6 +854,25 @@ function showForm(slot, b, rating, inReader){
 }
 loadReviews();
 
+/* ---------- عدّاد الزوار (لا يُرسَل أي بيانات شخصية) ----------
+   زيارة واحدة لكل جلسة تصفّح. افتحي الموقع مرة بإضافة ‎#me‎ في آخر الرابط فلا تُحسب زياراتك من ذلك الجهاز. */
+if (location.hash === "#me"){ store.set("me", 1); history.replaceState(null, "", location.pathname); }
+function track(data){
+  if (!REV_ON || store.get("me", 0)) return;
+  try { fetch(REVIEWS_URL, { method:"POST", mode:"no-cors", keepalive:true, headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify(data) }); } catch(e){}
+}
+(function(){
+  let seen = false; try { seen = !!sessionStorage.getItem("rufuf-visit"); sessionStorage.setItem("rufuf-visit", "1"); } catch(e){}
+  if (seen) return;
+  const isNew = !store.get("visitor", 0); store.set("visitor", 1);
+  track({ type:"visit", nw:isNew });
+})();
+function trackRead(b, ev){
+  let k = "rufuf-" + ev + "-" + b.id, seen = false;
+  try { seen = !!sessionStorage.getItem(k); sessionStorage.setItem(k, "1"); } catch(e){}
+  if (!seen) track({ type:"read", id:b.id, title:b.title, ev });
+}
+
 /* ================= FLIP-BOOK READER =================
    Arabic book, always two facing pages once open.
    leaf k: front = page 2k+1 (left), back = page 2k+2 (lands on the right).
@@ -865,6 +884,7 @@ function setVP(){ document.documentElement.style.setProperty("--vw", innerWidth 
 setVP();
 
 function openReader(b, at){
+  trackRead(b, "open");
   R.book = b; R.turned = at || 0; R.z = 1;
   $("#rTitle").innerHTML = `${b.title}<small>تأليف: ${b.author}</small>`;
   $("#rDone").classList.remove("on");
@@ -970,6 +990,7 @@ $("#rRot").onclick = () => { R.rot = !R.rot; reader.classList.toggle("rot", R.ro
 const MSG = ["", "شكرًا لك! 🌱", "جميل! 🌼", "رائع جدًا! 🌟", "مدهش! 🎈", "قصة لا تُنسى! 💛"];
 function finish(){
   const b = R.book, done = store.get("done", {}); done[b.id] = 1; store.set("done", done);
+  trackRead(b, "done");
   $("#rDone").classList.add("on"); confetti(); cheer();
   $("#rForm").innerHTML = "";
   const stars = store.get("stars", {}), wrap = $("#rStars"); wrap.innerHTML = ""; $("#rMsg").textContent = stars[b.id] ? MSG[stars[b.id]] : "";
