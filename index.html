@@ -853,7 +853,7 @@ function showForm(slot, b, rating, inReader){
     if (m.length < 3 && !tags.length) return q("#fErr").textContent = "اختر ما أعجبك أو اكتب جملة قصيرة.";
     const last = +store.get("rev-last", 0); if (Date.now() - last < 60000) return q("#fErr").textContent = "أرسلتَ رأيًا قبل لحظات، انتظر دقيقة ثم أعد المحاولة.";
     const k = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-    const rec = { k, id:b.id, title:b.title, n, w, s:r, t:tags, m, hp:q("#fWeb").value };
+    const rec = { k, id:b.id, title:b.title, n, w, s:r, t:tags, m };
     q("#fSend").disabled = true; q("#fSend").textContent = "جارٍ الإرسال…";
     try {
       await sendToSheet(rec);
