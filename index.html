@@ -789,8 +789,16 @@ let REVIEWS = [];                                   // approved reviews from the
 /* يُرسَل كل شيء بطلب GET (الأضمن في Safari وكل المتصفحات)، مع POST احتياطيًا */
 function sendToSheet(data){
   const url = REVIEWS_URL + "?d=" + encodeURIComponent(JSON.stringify(data)) + "&_=" + Date.now();
-  return fetch(url, { mode:"no-cors", cache:"no-store", keepalive:true }).catch(() =>
-    fetch(REVIEWS_URL, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify(data) }));
+  /* طلب «صورة» بسيط: يعمل في كل المتصفحات بلا قيود CORS، ويُنفَّذ السكربت فور وصوله */
+  return new Promise(res => {
+    const img = new Image();
+    const done = () => { clearTimeout(t); res(); };
+    const t = setTimeout(done, 4000);
+    img.onload = img.onerror = done;
+    img.referrerPolicy = "no-referrer";
+    img.src = url;
+    (window._pings = window._pings || []).push(img);   // يبقى الطلب حيًّا حتى يكتمل
+  });
 }
 const REV_ON = !!REVIEWS_URL;
 async function loadReviews(){
