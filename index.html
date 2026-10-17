@@ -289,6 +289,7 @@ footer{background:var(--sandbg)}
 .leaf .front::after{background:linear-gradient(270deg,rgba(0,0,0,.24) 0%,rgba(0,0,0,.06) 3.5%,transparent 9%)}
 .leaf .back::after{background:linear-gradient(90deg,rgba(0,0,0,.24) 0%,rgba(0,0,0,.06) 3.5%,transparent 9%)}
 .leaf .back.blank{background:linear-gradient(90deg,#e9dfcd,#fffaf1 25%)}
+.leaf .front.blank{background:linear-gradient(270deg,#e9dfcd,#fffaf1 25%)}
 .leaf .front .lit{position:absolute;inset:0;background:linear-gradient(270deg,rgba(0,0,0,.33),transparent 60%);opacity:0;transition:opacity 1s;pointer-events:none}
 .leaf.moving .front .lit{opacity:1}
 .loading{position:absolute;inset:0;display:grid;place-items:center;background:#fffdf8}
@@ -758,7 +759,7 @@ document.querySelectorAll(".rv").forEach(el => io.observe(el));
 /* ================= BOOK SHEET ================= */
 const sheet = $("#sheet");
 function openSheet(b){
-  const L = Math.ceil(b.pages/2), prog = store.get("prog", {})[b.id] || 0, mid = prog > 0 && prog < L, my = store.get("stars", {})[b.id] || 0;
+  const L = slotsOf(b).length / 2, prog = store.get("prog", {})[b.id] || 0, mid = prog > 0 && prog < L, my = store.get("stars", {})[b.id] || 0;
   const cv = $("#scv"); cv.style.aspectRatio = b.ratio; cv.style.width = b.ratio >= .9 ? "100%" : (b.ratio * 300) + "px"; cv.style.maxWidth = "100%";
   $("#simg").src = coverSrc(b); $("#simg").alt = "غلاف " + b.title;
   $("#stag").textContent = b.tag; $("#stag").style.setProperty("--c", TAGCOL[b.tag]);
@@ -917,15 +918,26 @@ addEventListener("popstate", () => { if (reader.classList.contains("on")) closeR
 $("#rClose").onclick = () => history.back();
 $("#rBack").onclick = () => { history.back(); setTimeout(() => $("#books").scrollIntoView(), 60); };
 
+/* ترتيب الصفحات على الأوراق: الغلاف وحده، ثم رسالة رفوف وحدها، ثم المتن صفحتين صفحتين،
+   ثم الصفحة الأخيرة (صفحة الكاتب) وحدها كغلاف خلفي. الصفر صفحة بيضاء. */
+function slotsOf(b){
+  const n = b.pages; if (n < 4) return Array.from({length: n + (n % 2)}, (_, i) => i < n ? i + 1 : 0);
+  const s = [1, 2, 0];
+  for (let p = 3; p < n; p++) s.push(p);
+  if (s.length % 2 === 0) s.push(0);
+  s.push(n);
+  return s;
+}
 function build(){
-  const n = R.book.pages, L = Math.ceil(n / 2);
+  const S = R.slots = slotsOf(R.book), L = S.length / 2;
+  if (R.turned > L) R.turned = 0;
   book3d.querySelectorAll(".leaf,.edge").forEach(l => l.remove());
   R.leaves = [];
   for (let k = 0; k < L; k++){
-    const fp = 2*k + 1, bp = 2*k + 2, hasB = bp <= n;
+    const fp = S[2*k], bp = S[2*k + 1];
     const leaf = document.createElement("div"); leaf.className = "leaf";
-    leaf.innerHTML = `<div class="face front" data-p="${fp}"><div class="loading"></div><div class="lit"></div></div>`
-      + `<div class="face back${hasB ? "" : " blank"}" data-p="${hasB ? bp : 0}">${hasB ? '<div class="loading"></div>' : ""}</div>`;
+    leaf.innerHTML = `<div class="face front${fp ? "" : " blank"}" data-p="${fp}">${fp ? '<div class="loading"></div>' : ""}<div class="lit"></div></div>`
+      + `<div class="face back${bp ? "" : " blank"}" data-p="${bp}">${bp ? '<div class="loading"></div>' : ""}</div>`;
     leaf.addEventListener("transitionend", e => { if (e.propertyName === "transform"){ leaf.classList.remove("moving"); stackZ(); } });
     book3d.appendChild(leaf); R.leaves.push(leaf);
   }
@@ -947,7 +959,7 @@ function stackZ(){
   const L = R.leaves.length;
   R.leaves.forEach((l,k) => { if (!l.classList.contains("moving")) l.style.zIndex = k < R.turned ? k + 1 : L - k + 1; });
 }
-function visiblePages(){ const n = R.book.pages, t = R.turned; return [t > 0 ? 2*t : null, 2*t + 1 <= n ? 2*t + 1 : null].filter(Boolean); }
+function visiblePages(){ const S = R.slots, t = R.turned; return [t > 0 ? S[2*t - 1] : 0, t < S.length / 2 ? S[2*t] : 0].filter(Boolean); }
 function render(instant){
   const L = R.leaves.length, t = R.turned, pw = R.pw;
   R.leaves.forEach((l,k) => {
