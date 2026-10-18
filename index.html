@@ -296,6 +296,10 @@ footer{background:var(--sandbg)}
 .loading::after{content:"";width:34px;height:34px;border-radius:50%;border:3px solid #eadcc6;border-top-color:var(--sea);animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .bshadow{position:absolute;top:0;bottom:0;box-shadow:0 26px 44px -16px rgba(40,50,70,.5);border-radius:3px;pointer-events:none;transition:left .8s cubic-bezier(.45,.05,.25,1),right .8s cubic-bezier(.45,.05,.25,1)}
+.book3d.flat{transition:opacity .2s,transform .2s}
+.book3d.flat.fading{opacity:0;transform:translateX(var(--dx,0))}
+.book3d.flat .bshadow{display:none}
+.book3d.flat .fv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:3px;box-shadow:0 26px 44px -16px rgba(40,50,70,.5),0 2px 6px rgba(40,50,70,.12);pointer-events:none;-webkit-user-drag:none;background:#fffdf8}
 .edge{position:absolute;top:1%;bottom:1%;width:6px;pointer-events:none;transition:opacity .4s;background:repeating-linear-gradient(90deg,#fbf6ec 0 1px,#d9ccb4 1px 2px);border-radius:2px}
 .side-btn{position:absolute;top:50%;z-index:5;width:clamp(46px,5vw,66px);height:clamp(46px,5vw,66px);margin-top:calc(clamp(46px,5vw,66px) / -2);border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;transition:opacity .3s,transform .12s}
 .side-btn:active{transform:scale(.92)}
@@ -574,6 +578,11 @@ footer{background:var(--sandbg)}
 /* ================= القصص =================
    لإضافة قصة: ضعي صور صفحاتها في books/<id>/ (01.webp, 02.webp … و cover.webp) ثم أضيفي سطرًا هنا. */
 const BOOKS = [
+  /* flat: تُعرض كل صفحة وحدها (صورة مستقلة لكل عرض)، و ratios نسبة العرض إلى الارتفاع لكل صفحة */
+  { id:"ukhti",  title:"أختي بطلة العناية المركزة",        author:"عبدالله بن محمد الحارثي", pages:19, sheets:36, flat:true, ratio:1107/1572,
+    ratios:[1107/1572, 2021/1435, ...Array(15).fill(2021/1445), 2021/1435, 1107/1572], tag:"أسرة",
+    blurb:"يعود عبدالله من مدرسته فلا يجد أمّه في البيت؛ فأخته الصغيرة وُلدت قبل موعدها ودخلت العناية المركزة. قصة عن الانتظار والأمل وفرحة العودة إلى البيت.",
+    quote:"هذا أَنا عَبْدُ اللهِ، الأَخُ الأَوْسَطُ لَها، وَسَأَحْمِيها.. فَهِيَ أُخْتِي الصَّغِيرَةُ المُشاكِسَةُ." },
   { id:"shamsa", title:"شمساء وصديقتها الجديدة",            author:"لين التميمي",        pages:32, ratio:1500/1061, tag:"صداقة",
     blurb:"تنتقل شمساء مع أسرتها إلى مدينة جديدة ومدرسة جديدة، وتشتاق إلى صديقتها القديمة… فهل تجد في مكانها الجديد قلبًا طيّبًا يشبه قلبها؟",
     quote:"الصَّداقَةُ لَيْسَتْ مَحْصورَةً في شَخْصٍ واحِدٍ، بَلْ مِنَ المُمْكِنِ أَنْ نُكَوِّنَ صَداقاتٍ كَثيرَةً في أَيِّ زَمانٍ وَمَكانٍ." },
@@ -590,7 +599,7 @@ const BOOKS = [
     blurb:"إجازة مليئة بالفرح والعادات العُمانية الجميلة، يحتفل فيها الأطفال بالوطن مع العائلة.",
     quote:"قَضَوا أَوْقاتًا جَميلَةً مَعًا، وَصَنَعوا ذِكْرى لا تُنسى." },
 ];
-const TAGCOL = { "خيال":"#e98b6d", "مغامرة":"#ffcf6e", "صداقة":"#9cc5c0", "وطني":"#d49248" };
+const TAGCOL = { "خيال":"#e98b6d", "مغامرة":"#ffcf6e", "صداقة":"#9cc5c0", "وطني":"#d49248", "أسرة":"#e6bbcc" };
 const PALETTE = [
   ["زبدة","#ffdd95"],["مشمش","#f1bd81"],["خزامى","#e6bbcc"],["ضباب","#b9c7d0"],["بحر","#788fb1","#fff"],
   ["ميرمية","#bfcba3"],["زيتون","#9ca14d","#fff"],["رمل","#efddc9"],["وردة","#f3a3a4"],["عسل","#d49248","#fff"]
@@ -618,7 +627,7 @@ const spineData = [["كلّ القصص","#165a63","الكل",BOOKS.length], ...O
 const heights = ["92%","80%","96%","74%","88%"], rots = ["-4deg","3deg","-2deg","5deg","-6deg"];
 spineData.forEach(([label, c, tag, n], i) => {
   const s = document.createElement("button"); s.className = "spine";
-  s.style.cssText = `--c:${c};--h:${heights[i % 5]};--r:${rots[i % 5]};${c === "#ffcf6e" || c === "#9cc5c0" ? "--t:#165a63" : ""}`;
+  s.style.cssText = `--c:${c};--h:${heights[i % 5]};--r:${rots[i % 5]};${["#ffcf6e","#9cc5c0","#e6bbcc"].includes(c) ? "--t:#165a63" : ""}`;
   s.innerHTML = `<span>${label}</span><i>${AR(n)}</i>`;
   s.onclick = () => { setFilter(tag); $("#books").scrollIntoView({behavior:"smooth"}); };
   $("#spines").appendChild(s);
@@ -758,12 +767,12 @@ document.querySelectorAll(".rv").forEach(el => io.observe(el));
 /* ================= BOOK SHEET ================= */
 const sheet = $("#sheet");
 function openSheet(b){
-  const L = slotsOf(b).length / 2, prog = store.get("prog", {})[b.id] || 0, mid = prog > 0 && prog < L, my = store.get("stars", {})[b.id] || 0;
+  const L = lastT(b), prog = store.get("prog", {})[b.id] || 0, mid = prog > 0 && prog < L, my = store.get("stars", {})[b.id] || 0;
   const cv = $("#scv"); cv.style.aspectRatio = b.ratio; cv.style.width = b.ratio >= .9 ? "100%" : (b.ratio * 300) + "px"; cv.style.maxWidth = "100%";
   $("#simg").src = coverSrc(b); $("#simg").alt = "غلاف " + b.title;
   $("#stag").textContent = b.tag; $("#stag").style.setProperty("--c", TAGCOL[b.tag]);
   $("#stitle").textContent = b.title; $("#sby").textContent = "تأليف: " + b.author;
-  $("#smeta").innerHTML = `<span>📄 ${AR(b.pages)} صفحة</span><span>⏱ نحو ${AR(Math.max(3, Math.round(b.pages*0.6)))} دقائق</span>`;
+  $("#smeta").innerHTML = `<span>📄 ${AR(b.sheets || b.pages)} صفحة</span><span>⏱ نحو ${AR(Math.max(3, Math.round((b.sheets || b.pages)*0.6)))} دقائق</span>`;
   $("#srate").innerHTML = my ? `تقييمك: ${[1,2,3,4,5].map(i => star(i <= my)).join("")}` : "";
   $("#sblurb").textContent = b.blurb;
   const acts = $("#sacts"); acts.innerHTML = "";
@@ -927,7 +936,17 @@ function slotsOf(b){
   s.push(n);
   return s;
 }
+const lastT = b => b.flat ? b.pages - 1 : slotsOf(b).length / 2;
 function build(){
+  book3d.classList.toggle("flat", !!R.book.flat);
+  book3d.classList.remove("fading");
+  book3d.querySelectorAll(".leaf,.edge,.fv").forEach(l => l.remove());
+  R.leaves = [];
+  if (R.book.flat){
+    if (R.turned > lastT(R.book)) R.turned = 0;
+    $("#rRange").max = lastT(R.book);
+    layout(); render(true); return;
+  }
   const S = R.slots = slotsOf(R.book), L = S.length / 2;
   if (R.turned > L) R.turned = 0;
   book3d.querySelectorAll(".leaf,.edge").forEach(l => l.remove());
@@ -946,7 +965,14 @@ function build(){
 }
 function layout(){
   const small = stage.clientWidth < 760;
-  const W = stage.clientWidth - (small ? 8 : 150), H = stage.clientHeight - (small ? 8 : 16), a = R.book.ratio;
+  const W = stage.clientWidth - (small ? 8 : 150), H = stage.clientHeight - (small ? 8 : 16);
+  if (R.book.flat){
+    const a = R.book.ratios[R.turned], ph = Math.min(H, W / a) * R.z;
+    book3d.style.width = ph * a + "px"; book3d.style.height = ph + "px";
+    $("#zOut").disabled = R.z <= 1; $("#zFit").classList.toggle("off", R.z === 1);
+    return;
+  }
+  const a = R.book.ratio;
   const fit = Math.min(H, W / (2*a));
   const ph = fit * R.z, pw = ph * a;
   R.pw = pw;
@@ -959,7 +985,34 @@ function stackZ(){
   R.leaves.forEach((l,k) => { if (!l.classList.contains("moving")) l.style.zIndex = k < R.turned ? k + 1 : L - k + 1; });
 }
 function visiblePages(){ const S = R.slots, t = R.turned; return [t > 0 ? S[2*t - 1] : 0, t < S.length / 2 ? S[2*t] : 0].filter(Boolean); }
+/* عرض الصفحات المنفردة: تختفي الصفحة الحالية ثم تظهر التالية بمقاسها */
+function renderFlat(instant){
+  const b = R.book, t = R.turned, L = lastT(b), src = pageSrc(b, t + 1);
+  const cur = book3d.querySelector(".fv");
+  const show = () => {
+    if (R.turned !== t || R.book !== b) return;
+    book3d.querySelectorAll(".fv").forEach(x => x.remove());
+    layout();
+    const im = new Image(); im.className = "fv"; im.alt = "صفحة " + (t + 1); im.decoding = "async"; im.draggable = false;
+    const reveal = () => requestAnimationFrame(() => book3d.classList.remove("fading"));
+    im.onload = im.onerror = reveal; im.src = src; book3d.appendChild(im);
+    if (im.complete) reveal();
+  };
+  if (!cur || cur.getAttribute("src") !== src){
+    if (instant || !cur) show();
+    else { book3d.classList.add("fading"); book3d.style.setProperty("--dx", (R.dir > 0 ? -1 : 1) * 24 + "px"); setTimeout(show, 200); }
+  } else layout();
+  book3d.style.transform = "";
+  $("#rPrev").disabled = t === 0;
+  $("#rNext").classList.toggle("end", t === L);
+  $("#rNext").setAttribute("aria-label", t === L ? "إنهاء القصة وتقييمها" : "الصفحة التالية");
+  $("#rRange").value = t;
+  $("#rCount").textContent = t === 0 ? "الغلاف" : `${AR(t + 1)} من ${AR(b.pages)}`;
+  [t + 1, t + 2, t].forEach(i => { if (i >= 1 && i <= b.pages){ const p = new Image(); p.src = pageSrc(b, i); } });
+  const prog = store.get("prog", {}); prog[b.id] = t; store.set("prog", prog);
+}
 function render(instant){
+  if (R.book.flat) return renderFlat(instant);
   const L = R.leaves.length, t = R.turned, pw = R.pw;
   R.leaves.forEach((l,k) => {
     if (instant) l.style.transition = "none";
@@ -992,6 +1045,12 @@ function loadNear(){
   });
 }
 function go(dir){
+  if (R.book.flat){
+    const L = lastT(R.book), t = R.turned;
+    if (dir > 0 && t >= L){ finish(); return; }
+    const nt = t + dir; if (nt < 0 || nt > L) return;
+    R.dir = dir; R.turned = nt; render(false); swish(); return;
+  }
   const L = R.leaves.length, t = R.turned;
   if (dir > 0 && t >= L){ finish(); return; }
   const nt = t + dir; if (nt < 0 || nt > L) return;
@@ -999,7 +1058,7 @@ function go(dir){
   leaf.classList.add("moving"); leaf.style.zIndex = 999;
   R.turned = nt; render(false); swish();
 }
-function jump(t){ R.turned = t; render(false); swish(); }
+function jump(t){ R.dir = t > R.turned ? 1 : -1; R.turned = t; render(false); swish(); }
 function setZoom(z){
   const cx = stage.scrollLeft + stage.clientWidth/2, cy = stage.scrollTop + stage.clientHeight/2, old = R.z;
   R.z = Math.max(1, Math.min(3, z)); layout(); render(true);
