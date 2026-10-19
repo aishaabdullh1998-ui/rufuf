@@ -346,7 +346,7 @@ footer{background:var(--sandbg)}
 .sheet .box>*{min-width:0}
 .avg .hstar{width:22px}
 .notes-row{display:flex;gap:16px;overflow-x:auto;padding:10px 4px 16px;scroll-snap-type:x mandatory}
-.rnote{flex:0 0 240px;scroll-snap-align:start;position:relative;background:#fffef8;padding:26px 16px 14px;box-shadow:0 10px 18px -12px rgba(40,50,20,.5);
+.rnote{flex:0 0 270px;scroll-snap-align:start;position:relative;background:#fffef8;padding:26px 16px 14px;box-shadow:0 10px 18px -12px rgba(40,50,20,.5);
   background-image:repeating-linear-gradient(0deg,transparent 0 27px,#d6e3ec 27px 28px);background-position:0 22px}
 .rnote::before{content:"";position:absolute;top:-8px;left:50%;width:64px;height:18px;transform:translateX(-50%);background:rgba(255,207,110,.75)}
 .rnote .st{display:flex;gap:2px}.rnote .st .hstar{width:18px}
@@ -360,7 +360,7 @@ footer{background:var(--sandbg)}
 .rform h5{margin:0 0 10px;font:800 20px var(--round)}
 .rform .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .rform input,.rform select,.rform textarea{width:100%;font:500 16px var(--sans);border:2px solid #e6d8c5;border-radius:14px;padding:10px 12px;background:#fff;color:var(--ink)}
-.rform textarea{resize:none;height:84px}
+.rform textarea{resize:none;height:120px}
 .rform .chipsel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .rform .chipsel button{border:2px solid #e6d8c5;background:#fff;border-radius:999px;padding:7px 12px;font:600 14px var(--sans);cursor:pointer;color:var(--ink)}
 .rform .chipsel button.on{background:var(--sea);border-color:var(--sea);color:#fff}
@@ -847,14 +847,14 @@ function showForm(slot, b, rating, inReader){
     ${inReader ? "" : `<div class="pick" id="fpick"></div>`}
     <div class="row2"><input id="fName" maxlength="20" placeholder="اسمك الأول" autocomplete="off"><select id="fWho"><option value="">من أنت؟</option>${WHO.map(w => `<option>${w}</option>`).join("")}</select></div>
     <div class="chipsel" id="fTags">${LIKES.map(l => `<button type="button">${l}</button>`).join("")}</div>
-    <textarea id="fMsg" maxlength="140" placeholder="اكتب جملة قصيرة عن القصة…"></textarea>
+    <textarea id="fMsg" maxlength="300" placeholder="اكتب رأيك في القصة…"></textarea>
     <input id="fWeb" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
     <div class="err" id="fErr"></div>
-    <div class="foot"><span class="cnt" id="fCnt">٠ / ١٤٠</span><button class="btn" id="fSend">إرسال الرأي</button></div></div>`;
+    <div class="foot"><span class="cnt" id="fCnt">٠ / ٣٠٠</span><button class="btn" id="fSend">إرسال الرأي</button></div></div>`;
   const q = sel => slot.querySelector(sel);
   if (!inReader){ const pk = q("#fpick"); const draw = () => { pk.innerHTML = [1,2,3,4,5].map(i => `<button type="button" aria-label="${AR(i)} نجوم">${star(i <= r)}</button>`).join(""); [...pk.children].forEach((bt,i) => bt.onclick = () => { r = i + 1; draw(); }); }; draw(); }
   [...q("#fTags").children].forEach(bt => bt.onclick = () => { bt.classList.toggle("on"); tags = [...q("#fTags").children].filter(x => x.classList.contains("on")).map(x => x.textContent); });
-  q("#fMsg").oninput = e => q("#fCnt").textContent = `${AR(e.target.value.length)} / ١٤٠`;
+  q("#fMsg").oninput = e => q("#fCnt").textContent = `${AR(e.target.value.length)} / ٣٠٠`;
   q("#fSend").onclick = async () => {
     const n = q("#fName").value.trim(), w = q("#fWho").value, m = q("#fMsg").value.trim();
     if (!r) return q("#fErr").textContent = "اختر عدد النجوم أولًا.";
