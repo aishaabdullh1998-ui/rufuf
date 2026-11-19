@@ -305,17 +305,17 @@ footer{background:var(--sandbg)}
 .book3d.flat .bshadow{display:none}
 .book3d.flat .fv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:3px;box-shadow:0 26px 44px -16px rgba(40,50,70,.5),0 2px 6px rgba(40,50,70,.12);pointer-events:none;-webkit-user-drag:none;background:#fffdf8}
 .edge{position:absolute;top:1%;bottom:1%;width:6px;pointer-events:none;transition:opacity .4s;background:repeating-linear-gradient(90deg,#fbf6ec 0 1px,#d9ccb4 1px 2px);border-radius:2px}
-.side-btn{position:absolute;top:50%;z-index:5;width:clamp(46px,5vw,66px);height:clamp(46px,5vw,66px);margin-top:calc(clamp(46px,5vw,66px) / -2);border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;transition:opacity .3s,transform .12s}
+.side-btn{position:relative;flex:none;z-index:5;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;transition:opacity .3s,transform .12s}
 .side-btn:active{transform:scale(.92)}
 .side-btn svg{width:44%;height:44%}
-.side-btn.next{left:clamp(6px,1.6vw,24px);background:var(--sea);color:#fff;box-shadow:0 5px 0 var(--sea2)}
-.side-btn.prev{right:clamp(6px,1.6vw,24px);background:rgba(255,255,255,.85);color:var(--ink)}
-.side-btn:disabled{opacity:0;pointer-events:none}
+.side-btn.next{background:var(--sea);color:#fff;box-shadow:0 4px 0 var(--sea2)}
+.side-btn.prev{background:rgba(255,255,255,.9);color:var(--ink)}
+.side-btn:disabled{opacity:.35;pointer-events:none}
 .side-btn.next.end{background:var(--coral);box-shadow:0 5px 0 var(--coral2);animation:nudge 1.6s ease-in-out infinite}
 .side-btn.next.end svg{display:none}
-.side-btn.next.end::after{content:"★";font-size:26px;line-height:1}
+.side-btn.next.end::after{content:"★";font-size:22px;line-height:1}
 @keyframes nudge{50%{transform:translateX(-6px)}}
-@media (max-width:700px){.side-btn{opacity:.8;width:42px;height:42px;margin-top:-21px}}
+@media (max-width:700px){.side-btn{width:38px;height:38px}.rfoot{gap:5px;padding-inline:6px}.prog{flex:1 1 auto;min-width:0;padding:4px 8px;gap:6px}.prog input{min-width:0}.prog span{font-size:12px}.rfoot .zoom{gap:4px}.rfoot .zoom .ib{width:32px;height:32px}}
 .rfoot{position:relative;z-index:6;display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 10px max(8px,env(safe-area-inset-bottom))}
 .prog{flex:0 1 520px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.85);border-radius:999px;padding:4px 16px}
 .prog input{flex:1;direction:rtl;accent-color:var(--sea);height:26px;cursor:pointer;min-width:60px}
@@ -554,15 +554,15 @@ footer{background:var(--sandbg)}
   <div class="stage" id="stage">
     <div class="book3d" id="book3d"><div class="bshadow" id="bshadow"></div></div>
   </div>
-  <button class="side-btn prev" id="rPrev" aria-label="الصفحة السابقة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
-  <button class="side-btn next" id="rNext" aria-label="الصفحة التالية"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   <div class="rfoot">
     <div class="zoom">
       <button class="ib" id="zIn" aria-label="تكبير">+</button>
       <button class="ib" id="zOut" aria-label="تصغير">−</button>
       <button class="ib" id="zFit" aria-label="ملاءمة للشاشة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></button>
     </div>
+<button class="side-btn prev" id="rPrev" aria-label="الصفحة السابقة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
     <div class="prog"><input type="range" id="rRange" min="0" max="1" value="0" aria-label="انتقل إلى صفحة"><span id="rCount"></span></div>
+    <button class="side-btn next" id="rNext" aria-label="الصفحة التالية"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   </div>
   <div class="credit">إعداد: أ. عائشة بنت عبدالله البروانية</div>
   <div class="done" id="rDone">
@@ -1156,11 +1156,16 @@ stage.addEventListener("click", e => {
   if (R.rot){ const mid = r.top + r.height/2; e.clientY < mid ? go(1) : go(-1); }
   else { if (e.clientY < r.top || e.clientY > r.bottom) return; e.clientX < r.left + r.width/2 ? go(1) : go(-1); }
 });
-let sx = null, sy = null;
-stage.addEventListener("pointerdown", e => { sx = bx(e); sy = by(e); });
-stage.addEventListener("pointerup", e => { if (sx === null) return; const dx = bx(e) - sx, dy = by(e) - sy; sx = null;
-  if (R.z > 1) return;
-  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)){ R.swiped = true; dx > 0 ? go(1) : go(-1); } });
+let sx = null, sy = null, st = 0;
+const swipeEnd = (x, y) => { if (sx === null) return; const dx = x - sx, dy = y - sy; sx = null;
+  if (R.z > 1 || Date.now() - st > 900) return;
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2){ R.swiped = true; dx > 0 ? go(1) : go(-1); setTimeout(() => R.swiped = false, 400); } };
+const pt = t => ({ clientX: t.clientX, clientY: t.clientY });
+stage.addEventListener("touchstart", e => { if (e.touches.length !== 1){ sx = null; return; } const p = pt(e.touches[0]); sx = bx(p); sy = by(p); st = Date.now(); }, { passive:true });
+stage.addEventListener("touchend", e => { const p = pt(e.changedTouches[0]); swipeEnd(bx(p), by(p)); }, { passive:true });
+stage.addEventListener("touchcancel", () => sx = null);
+stage.addEventListener("pointerdown", e => { if (e.pointerType === "touch") return; sx = bx(e); sy = by(e); st = Date.now(); });
+stage.addEventListener("pointerup", e => { if (e.pointerType === "touch") return; swipeEnd(bx(e), by(e)); });
 let rt; addEventListener("resize", () => { setVP(); if (!reader.classList.contains("on")) return; clearTimeout(rt); rt = setTimeout(() => { layout(); render(true); }, 120); });
 
 renderShelf();
