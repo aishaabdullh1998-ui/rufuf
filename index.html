@@ -840,7 +840,7 @@ async function loadReviews(){
     const r = await fetch(REVIEWS_URL + "?action=list", { cache:"no-store" }); const d = await r.json();
     REVIEWS = Array.isArray(d.reviews) ? d.reviews : [];
     try { sessionStorage.setItem("rufuf-revs", JSON.stringify({ at:Date.now(), list:REVIEWS })); } catch(e){}
-    renderShelf(); if (sheet.classList.contains("on") && curSheet) renderRevs(curSheet);
+    renderShelf(); if (sheet.classList.contains("on") && curSheet && !$("#sForm .rform")) renderRevs(curSheet);
   } catch(e){}
 }
 function approved(id){ return REVIEWS.filter(r => r.id === id); }
@@ -1075,6 +1075,7 @@ function loadNear(){
   });
 }
 function go(dir){
+  if ($("#rDone").classList.contains("on")) return;   // بطاقة النهاية مفتوحة: لا تقليب ولا إعادة رسم للنموذج
   if (R.book.flat){
     const L = lastT(R.book), t = R.turned;
     if (dir > 0 && t >= L){ finish(); return; }
@@ -1103,6 +1104,7 @@ $("#rRot").onclick = () => { R.rot = !R.rot; reader.classList.toggle("rot", R.ro
 /* rating after each story */
 const MSG = ["", "شكرًا لك! 🌱", "جميل! 🌼", "رائع جدًا! 🌟", "مدهش! 🎈", "قصة لا تُنسى! 💛"];
 function finish(){
+  if ($("#rDone").classList.contains("on")) return;
   const b = R.book, done = store.get("done", {}); done[b.id] = 1; store.set("done", done);
   trackRead(b, "done");
   $("#rDone").classList.add("on"); confetti(); cheer();
@@ -1151,6 +1153,10 @@ $("#rFull").onclick = () => {
 addEventListener("keydown", e => {
   if (sheet.classList.contains("on") && e.key === "Escape") return closeSheet();
   if (!reader.classList.contains("on")) return;
+  /* أثناء الكتابة في نموذج الرأي لا تُقلَب الصفحات (المسافة كانت تُعيد بطاقة النهاية وتمسح التعليق) */
+  const tg = e.target, tn = tg && tg.tagName;
+  if (tn === "TEXTAREA" || tn === "INPUT" || tn === "SELECT" || (tg && tg.isContentEditable)) return;
+  if ($("#rDone").classList.contains("on") && e.key !== "Escape") return;
   if (["ArrowLeft"," ","PageDown"].includes(e.key)){ e.preventDefault(); go(1); }
   else if (["ArrowRight","PageUp"].includes(e.key)){ e.preventDefault(); go(-1); }
   else if (e.key === "+" || e.key === "=") setZoom(R.z + .4);
