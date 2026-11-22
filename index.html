@@ -813,7 +813,7 @@ sheet.onclick = e => { if (e.target === sheet) closeSheet(); };
    ضعي هنا رابط تطبيق الويب بعد نشره من Apps Script: */
 const REVIEWS_URL = "https://script.google.com/macros/s/AKfycbw__C-2zTYZRL9nQdgl6SVPvdLyyBSpgNZsAG8ZB5ftQ-ss8k1NxiHukOhCrTZj2Lc_9w/exec";
 const LIKES = ["أحببتُ الشخصيات", "النهاية مدهشة", "تعلّمتُ درسًا جميلًا", "الرسومات رائعة", "أضحكتني", "أريد جزءًا ثانيًا"];
-const WHO = ["طالب/ة في الصف الأول", "طالب/ة في الصف الثاني", "طالب/ة في الصف الثالث", "طالب/ة في الصف الرابع", "وليّ أمر", "معلّم/ة"];
+const WHO = ["طالب/ة في الصف الأول", "طالب/ة في الصف الثاني", "طالب/ة في الصف الثالث", "طالب/ة في الصف الرابع", "وليّ أمر", "معلّم/ة", "زائر"];
 let REVIEWS = [];                                   // approved reviews from the sheet
 /* يُرسَل كل شيء بطلب GET (الأضمن في Safari وكل المتصفحات)، مع POST احتياطيًا */
 function sendToSheet(data){
