@@ -585,7 +585,7 @@ footer{background:var(--sandbg)}
 /* ================= القصص =================
    لإضافة قصة: ضعي صور صفحاتها في books/<id>/ (01.webp, 02.webp … و cover.webp) ثم أضيفي سطرًا هنا. */
 const BOOKS = [
-  { id:"hawa",       title:"الهواء المتكلم",               author:"محمد بن حميد الحارثي", pages:28, seq:true, ratio:2140/3060, tag:"مغامرة",
+  { id:"hawa",       title:"الهواء المتكلم",               author:"محمد بن حميد الحارثي", pages:28, seq:true, ratio:2140/3060, tag:"مغامرة", v:3,
     blurb:"في مساء شتائي بارد سمع البراء صوتًا غريبًا في المطبخ، فأصابه الهلع وهرب. فما مصدر هذا الصوت المخيف؟ وهل يجد البراء الشجاعة ليكتشف السر؟",
     quote:"نَخافُ مِنَ الأَشْياءِ الَّتي لا نَعْرِفُها، وَحينَ نَعْرِفُها لا نَظَلُّ خائِفِين." },
   { id:"qilada",     title:"قلادة الحظ",                   author:"الأيهم بن سليم الخنجري", pages:32, seq:true, ratio:1011/1445, tag:"مغامرة",
@@ -626,8 +626,9 @@ const PALETTE = [
   ["زبدة","#ffdd95"],["مشمش","#f1bd81"],["خزامى","#e6bbcc"],["ضباب","#b9c7d0"],["بحر","#788fb1","#fff"],
   ["ميرمية","#bfcba3"],["زيتون","#9ca14d","#fff"],["رمل","#efddc9"],["وردة","#f3a3a4"],["عسل","#d49248","#fff"]
 ];
-const pageSrc = (b,i) => `books/${b.id}/${String(i).padStart(2,"0")}.webp`;
-const coverSrc = b => `books/${b.id}/cover.webp`;
+/* v: رقم نسخة الصور؛ زيديه عند استبدال صفحات قصة حتى لا يعرض المتصفح النسخة القديمة المحفوظة */
+const pageSrc = (b,i) => `books/${b.id}/${String(i).padStart(2,"0")}.webp${b.v ? "?v=" + b.v : ""}`;
+const coverSrc = b => `books/${b.id}/cover.webp${b.v ? "?v=" + b.v : ""}`;
 const AR = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
 const $ = s => document.querySelector(s);
 const store = {
