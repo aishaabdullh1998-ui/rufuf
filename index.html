@@ -823,6 +823,15 @@ let REVIEWS = [];                                   // approved reviews from the
 /* يُرسَل كل شيء بطلب GET (الأضمن في Safari وكل المتصفحات)، مع POST احتياطيًا */
 function sendToSheet(data){
   const json = JSON.stringify(data);
+  /* الطريقة نفسها التي تصل بها القصص: POST نقرأ ردّه، وإن تعذّر نعود إلى الطريقة القديمة */
+  if (data && !data.type){
+    return fetch(REVIEWS_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: json })
+      .then(r => r.json()).then(res => { if (!res || !res.ok) throw new Error("rejected"); })
+      .catch(err => { if (err && err.message === "rejected") throw err; return sendOld(json); });
+  }
+  return sendOld(json);
+}
+function sendOld(json){
   const url = REVIEWS_URL + "?d=" + encodeURIComponent(json) + "&_=" + Date.now();
   /* الرأي الطويل لا يتّسع له الرابط، فيُرسَل بطلب POST */
   if (url.length > 6000) return fetch(REVIEWS_URL, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: json }).then(() => {});
