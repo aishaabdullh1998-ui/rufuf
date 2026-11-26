@@ -4,224 +4,353 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>أرسل قصتك — مكتبة رفوف</title>
-<meta name="description" content="أرسل قصتك إلى مكتبة رفوف، ومعك صندوق كلمات يساعدك على الكتابة.">
+<meta name="description" content="اكتب قصتك وأرسلها إلى مكتبة رفوف، ومعك صندوق كلمات يساعدك على الكتابة.">
 <meta name="theme-color" content="#cfe3e2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Crect%20width%3D%22120%22%20height%3D%22120%22%20rx%3D%2228%22%20fill%3D%22%23f4e8d8%22/%3E%3Cg%3E%20%3Crect%20x%3D%228%22%20y%3D%2298%22%20width%3D%22104%22%20height%3D%229%22%20rx%3D%224.5%22%20fill%3D%22%23c99556%22/%3E%20%3Crect%20x%3D%2214%22%20y%3D%2240%22%20width%3D%2220%22%20height%3D%2258%22%20rx%3D%224%22%20fill%3D%22%23165a63%22%20transform%3D%22rotate%28-6%2024%2098%29%22/%3E%20%3Crect%20x%3D%2218%22%20y%3D%2247%22%20width%3D%2210%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%23fff%22%20opacity%3D%22.6%22%20transform%3D%22rotate%28-6%2024%2098%29%22/%3E%20%3Crect%20x%3D%2238%22%20y%3D%2230%22%20width%3D%2220%22%20height%3D%2268%22%20rx%3D%224%22%20fill%3D%22%23e98b6d%22/%3E%20%3Crect%20x%3D%2243%22%20y%3D%2237%22%20width%3D%2210%22%20height%3D%223%22%20rx%3D%221.5%22%20fill%3D%22%23fff%22%20opacity%3D%22.7%22/%3E%20%3Crect%20x%3D%2264%22%20y%3D%2234%22%20width%3D%2222%22%20height%3D%2264%22%20rx%3D%225%22%20fill%3D%22%23fff8ec%22%20stroke%3D%22%23165a63%22%20stroke-width%3D%223.2%22%20stroke-dasharray%3D%226%205%22/%3E%20%3Cpath%20d%3D%22M75%2055v20M65%2065h20%22%20stroke%3D%22%23e98b6d%22%20stroke-width%3D%224.5%22%20stroke-linecap%3D%22round%22/%3E%20%3Crect%20x%3D%2292%22%20y%3D%2246%22%20width%3D%2218%22%20height%3D%2252%22%20rx%3D%224%22%20fill%3D%22%23ffcf6e%22%20transform%3D%22rotate%288%20101%2098%29%22/%3E%20%3Cpath%20d%3D%22M100%2022l2.6%205.4%205.9.8-4.3%204.1%201%205.8-5.2-2.8-5.2%202.8%201-5.8-4.3-4.1%205.9-.8z%22%20fill%3D%22%23ffcf6e%22/%3E%20%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sea:#165a63; --sea2:#0d3c42; --coral:#e98b6d; --coral2:#c9694c; --sun:#ffcf6e; --foam:#9cc5c0; --mint:#cfe3e2; --sand:#f4e8d8; --sand2:#efddc9; --wood:#c99556;
-  --cream:#fcf8f2; --paper:#fffdf8; --ink:#2b2a28; --muted:#6c6660; --ok:#2f8a4a; --err:#b8412c;
-  --round:"Baloo Bhaijaan 2","Readex Pro",system-ui,sans-serif; --sans:"Readex Pro",system-ui,sans-serif; --hand:"Aref Ruqaa",serif;
+  --sea:#165a63; --sea2:#0d3c42; --coral:#e98b6d; --coral2:#c9694c; --sun:#ffcf6e; --mint:#cfe3e2; --note:#dff0ee; --sandbg:#f4e8d8; --sand:#efddc9; --wood:#c99556;
+  --cream:#fcf8f2; --paper:#fffdf8; --card:#fbf3e6; --ink:#2b2a28; --muted:#6c6660; --line:#c9d6ea; --margin:#f2a0a0; --err:#b8412c;
+  --round:"Baloo Bhaijaan 2","Readex Pro",system-ui,sans-serif; --sans:"Readex Pro",system-ui,sans-serif; --hand:"Aref Ruqaa",serif; --scal:22px;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--sand);color:var(--ink);font:400 17px/1.75 var(--sans);overflow-x:hidden}
-a{color:var(--sea)}
+body{background:var(--cream);color:var(--ink);font:400 16px/1.7 var(--sans);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+a{color:inherit}
 button,input,textarea,select{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));position:relative}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;text-decoration:none;font:700 18px/1 var(--round);padding:14px 26px 12px;border-radius:999px;background:var(--sea);color:#fff;box-shadow:0 5px 0 var(--sea2);white-space:nowrap;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--sea2)}
+.btn.coral{background:var(--coral);box-shadow:0 5px 0 var(--coral2)}
+.btn.coral:active{box-shadow:0 2px 0 var(--coral2)}
+.btn[disabled]{opacity:.6;cursor:wait}
 
-/* header */
-.top{position:sticky;top:0;z-index:20;background:var(--mint);padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
-.top .in{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:12px}
-.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--sea);font:800 30px/1 var(--round)}
-.logo svg{width:64px;height:28px;color:var(--sea)}
-.top h1{margin:0;flex:1;font:700 18px/1.3 var(--round);color:var(--sea)}
-.saved{font-size:13px;color:var(--sea);opacity:0;transition:opacity .3s;white-space:nowrap}
-.saved.on{opacity:.85}
-.pill{border:0;border-radius:999px;padding:9px 16px;font:700 15px/1 var(--round);background:var(--sea);color:#fff;white-space:nowrap}
-.pill.soft{background:#fff;color:var(--sea)}
+/* header — مثل الرئيسية */
+.hdr{position:sticky;top:0;z-index:50;background:var(--mint)}
+.hdr::after{content:"";position:absolute;left:0;right:0;top:100%;height:var(--scal);pointer-events:none;background:radial-gradient(circle at 50% 0,var(--mint) calc(var(--scal) - .5px),transparent var(--scal)) 0 0/calc(var(--scal)*2) var(--scal) repeat-x}
+.hdr .in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:72px;gap:16px}
+.hdr nav{display:flex;gap:4px}
+.hdr nav.l{justify-content:flex-end}
+.hdr nav a{font:700 14px var(--sans);text-decoration:none;padding:8px 12px;border-radius:999px}
+.hdr nav a:hover{background:rgba(255,255,255,.6)}
+.hdr nav a.on{background:#fff}
+.hdr .logo{display:block;width:112px;color:var(--sea)}
+.hdr .logo svg{display:block;width:100%;height:auto}
+.back{display:none;font:700 14px var(--sans);text-decoration:none;color:var(--sea)}
 
-/* layout */
-.page{max-width:1240px;margin:0 auto;padding:22px max(16px,env(safe-area-inset-right,0px)) 120px max(16px,env(safe-area-inset-left,0px));display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:start}
-.intro{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
-.intro h2{margin:0;font:800 clamp(30px,5vw,44px)/1.15 var(--round);color:var(--sea)}
-.intro p{margin:4px 0 0;color:var(--muted);max-width:640px}
-.steps{display:flex;gap:6px;flex-wrap:wrap}
-.steps span{font:600 13px/1 var(--sans);padding:7px 12px;border-radius:999px;background:var(--paper);color:var(--muted)}
-.steps span b{color:var(--coral2)}
-form{display:flex;flex-direction:column;gap:18px;min-width:0}
-fieldset{margin:0;border:0;padding:22px 24px;background:var(--paper);border-radius:24px;box-shadow:0 6px 18px rgba(22,90,99,.07);min-width:0}
-fieldset>*:not(legend){clear:both}
-legend{float:right;width:100%;padding:0;margin:0 0 12px;font:800 22px/1.3 var(--round);color:var(--sea);display:flex;align-items:center;gap:10px}
-legend i{font-style:normal;width:34px;height:34px;border-radius:50%;background:var(--c,var(--coral));color:#fff;display:grid;place-items:center;font:800 17px/1 var(--round);flex:none}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.f{display:flex;flex-direction:column;gap:4px;min-width:0}
-.f label,.lbl{font:600 15px/1.4 var(--sans)}
-.f label em,.lbl em{font-style:normal;color:var(--coral2)}
-.f small{color:var(--muted);font-size:13px;line-height:1.5}
-input[type=text],input[type=tel],select,textarea{width:100%;border:2px solid var(--sand2);border-radius:14px;background:#fff;padding:10px 14px;font-size:17px;min-height:48px}
-input:focus,select:focus,textarea:focus{border-color:var(--sea);outline:none}
-.bad{border-color:var(--err)!important;background:#fff6f3!important}
-.title-in{font:700 24px/1.4 var(--round)!important}
-.paperwrap{position:relative}
-#fText{min-height:420px;resize:vertical;font:400 21px/44px var(--sans);padding:12px 18px;
-  background:#fff repeating-linear-gradient(to bottom,transparent 0,transparent 43px,#ece0cf 43px,#ece0cf 44px);background-attachment:local}
-.textbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;font-size:14px;color:var(--muted)}
-.textbar b{color:var(--sea)}
-.hint{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:var(--sea);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
-textarea.small{min-height:96px;resize:vertical;line-height:1.7}
-.consent{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:var(--sand);margin-top:12px}
-.consent input{width:26px;height:26px;margin:2px 0 0;flex:none;accent-color:var(--sea)}
-.consent label{font-size:15.5px;line-height:1.7}
-.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}
-.sendrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
-.big{border:0;border-radius:999px;padding:16px 34px 14px;font:800 21px/1 var(--round);background:var(--coral);color:#fff;box-shadow:0 5px 0 var(--coral2)}
-.big:active{transform:translateY(3px);box-shadow:0 2px 0 var(--coral2)}
-.big[disabled]{opacity:.6;cursor:wait}
-.msg{font-size:15px;font-weight:600}
-.msg.err{color:var(--err)}
-.alt{font-size:13px;color:var(--muted)}
+/* hero */
+.hero{background:var(--sandbg);padding:calc(34px + var(--scal)) 0 34px}
+.hero .in{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.lock{display:block;width:min(380px,100%);height:auto}
+.hero p{margin:8px 0 0;max-width:540px;color:#6b5546;font-size:17px}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+.steps li{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:8px 16px 8px 14px;font:700 15px var(--round)}
+.steps i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--c);font:800 14px var(--round)}
 
-/* word box */
-.box{position:sticky;top:76px;background:var(--paper);border-radius:24px;box-shadow:0 12px 32px rgba(22,90,99,.16);overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 96px)}
-.boxhead{background:var(--coral);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.boxhead b{font:800 23px/1.2 var(--round)}
-.boxhead small{display:block;font-size:12.5px;opacity:.95;font-weight:500}
-.x{width:40px;height:40px;border-radius:12px;border:0;background:rgba(255,255,255,.25);color:#fff;font-size:22px;display:none}
-.boxbody{padding:14px 16px 18px;overflow:auto;display:flex;flex-direction:column;gap:12px}
-.bsearch{display:flex;gap:6px}
-.bsearch input{min-height:44px;font-size:16px}
+/* المكتب: الدفتر + صندوق الكلمات */
+.desk{padding:46px 0 30px}
+.desk .in{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:34px;align-items:start}
+.nb{position:relative;background:var(--paper);border-radius:6px 6px 10px 10px;box-shadow:0 2px 3px rgba(0,0,0,.08),0 26px 40px -22px rgba(60,35,20,.45);padding:40px 30px 22px 26px;min-width:0}
+.nb::before{content:"";position:absolute;top:-14px;left:26px;right:26px;height:30px;background:radial-gradient(ellipse 7px 14px at 50% 50%,#9a9aa6 0 5px,#e7e7ee 5.5px 7px,transparent 7.5px) 0 0/34px 30px repeat-x;pointer-events:none}
+.nb::after{content:"";position:absolute;top:0;bottom:0;right:58px;width:2px;background:var(--margin);pointer-events:none}
+.nb .pad{margin-right:46px}
+.lbl{display:block;font:600 13px/1.4 var(--sans);color:var(--coral2)}
+.lbl em{font-style:normal}
+#fTitle{width:100%;border:0;border-bottom:2px solid var(--line);background:transparent;padding:4px 0 6px;font:700 32px/1.5 var(--hand);color:var(--sea);border-radius:0}
+#fTitle::placeholder{color:#b9c6c4}
+#fTitle:focus{outline:none;border-bottom-color:var(--coral)}
+.lines{position:relative;margin-top:18px}
+#fText{display:block;width:100%;min-height:440px;resize:vertical;border:0;padding:0 2px;font:400 21px/44px var(--sans);color:var(--ink);
+  background:transparent repeating-linear-gradient(transparent 0 43px,var(--line) 43px 44px);background-attachment:local}
+#fText:focus{outline:none}
+#fText::placeholder{color:#b3aca4}
+.nbfoot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:14px;color:var(--muted)}
+.nbfoot b{color:var(--sea)}
+.tiny{border:0;background:var(--mint);color:var(--sea);border-radius:999px;padding:6px 12px;font:700 13px var(--round)}
+.hint{display:inline-flex;align-items:center;gap:6px;background:var(--sea);color:#fff;border-radius:12px;padding:6px 12px;font:700 13.5px var(--round);position:relative}
+.hint::after{content:"";position:absolute;top:-6px;right:24px;border:7px solid transparent;border-bottom-color:var(--sea);border-top:0}
+
+.note{position:sticky;top:100px;background:var(--note);border-radius:4px;padding:28px 20px 20px;transform:rotate(-1.2deg);box-shadow:0 18px 30px -18px rgba(22,90,99,.55);display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 120px);min-width:0}
+.note::before{content:"";position:absolute;top:-12px;left:50%;width:110px;height:26px;margin-left:-55px;background:rgba(255,207,110,.78);transform:rotate(3deg)}
+.nhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nhead h2{margin:0;display:flex;align-items:center;gap:8px;font:800 25px/1.2 var(--round);color:var(--sea)}
+.nhead h2 svg{width:38px;height:38px;flex:none}
+.nsub{margin:-8px 0 0;font-size:13px;color:var(--muted)}
+.x{display:none;width:40px;height:40px;border:0;border-radius:12px;background:rgba(255,255,255,.7);font-size:22px;color:var(--sea)}
+.bq{width:100%;min-height:44px;border:2px solid #bcd9d6;border-radius:14px;background:#fff;padding:8px 14px;font-size:15.5px}
+.bq:focus{outline:none;border-color:var(--sea)}
 .tabs{display:flex;gap:6px}
-.tabs button{flex:1;min-height:42px;border:0;border-radius:12px;background:var(--mint);color:var(--sea);font:600 15px/1 var(--sans)}
+.tabs button{flex:1;min-height:40px;border:0;border-radius:12px;background:rgba(255,255,255,.7);color:var(--sea);font:700 13.5px var(--round);padding:0 4px;white-space:nowrap}
 .tabs button[aria-selected=true]{background:var(--sea);color:#fff}
-.mine{font-size:14px;color:var(--muted)}
-.mine b{color:var(--coral2);font-size:16px}
-.ladt{font:800 20px/1.3 var(--round);color:var(--sea);margin:0}
-.rungs{display:flex;gap:6px;flex-wrap:wrap}
-.rung{flex:1 1 0;min-width:64px;min-height:46px;border:0;border-radius:12px;background:var(--sand2);font:700 17px/1.2 var(--round);padding:6px 4px}
-.rung[aria-pressed=true]{background:var(--coral);color:#fff}
-.ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:-6px}
-.mean{margin:0;font-weight:600;font-size:16px;line-height:1.6}
-.ex{margin:0;font-size:14.5px;color:var(--muted)}
+#bview>*{flex-shrink:0}
+#bview{overflow:auto;margin:0 -4px;padding:0 4px 4px;display:flex;flex-direction:column;gap:10px}
+.mine{margin:0;font-size:14px}.mine b{color:var(--coral2);font-size:17px}
+.ladt{margin:0;font:800 19px/1.3 var(--round);color:var(--sea)}
+.stairs{display:flex;align-items:flex-end;gap:4px;height:150px;margin-top:18px}
+.stairs button{flex:1 1 0;min-width:0;border:0;display:flex;align-items:flex-start;justify-content:center;padding:8px 2px 0;font:800 15px/1.25 var(--round);background:var(--paper);border-radius:8px 8px 0 0;color:var(--sea);box-shadow:inset 0 -6px 0 rgba(0,0,0,.05);overflow-wrap:anywhere;position:relative}
+.stairs button[aria-pressed=true]{background:var(--coral);color:#fff}
+.stairs button.mineR::before{content:"كلمتك";position:absolute;top:-22px;left:0;right:0;font:700 11.5px var(--sans);color:var(--coral2)}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);border-top:3px solid var(--wood);padding-top:3px;margin-top:-10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:0;border-radius:12px;background:var(--paper);padding:8px 12px;font:700 15px var(--round);color:var(--sea)}
+.chips button[aria-pressed=true]{background:var(--coral);color:#fff}
+.mean{margin:0;font-weight:600;font-size:15.5px;line-height:1.6}
+.ex{margin:-6px 0 0;font-size:14px;color:var(--muted)}
 .acts{display:flex;gap:6px;flex-wrap:wrap}
-.act{border:0;border-radius:12px;padding:9px 14px;font:700 14.5px/1.2 var(--round);background:var(--sea);color:#fff}
-.act.soft{background:var(--mint);color:var(--sea)}
-.note{font-size:12.5px;color:var(--muted);margin:0}
-.exl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.exl li{display:flex;align-items:center;gap:8px;background:var(--sand);border-radius:12px;padding:8px 10px 8px 12px}
-.exl li span{flex:1;font:700 19px/1.5 var(--hand);color:var(--ink)}
-.exl .act{padding:6px 12px;font-size:13.5px}
+.act{border:0;border-radius:999px;padding:8px 14px;font:700 14px/1.2 var(--round);background:var(--sea);color:#fff}
+.act.soft{background:#fff;color:var(--sea)}
+.fine{margin:0;font-size:12.5px;color:var(--muted)}
+.strips{display:flex;flex-direction:column;gap:8px}
+.strips div{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--paper);padding:7px 10px 7px 12px;clip-path:polygon(0 4%,3% 0,97% 3%,100% 0,99% 96%,96% 100%,3% 97%,0 100%)}
+.strips span{font:500 16.5px/1.65 var(--sans);color:var(--ink)}
+.emos{display:flex;flex-wrap:wrap;gap:6px}
+.emos.one{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.emos.one button{flex:none}
+.emos button{border:0;border-radius:999px;padding:6px 12px 6px 10px;font:700 14px/1.2 var(--round);background:#fff;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.emos button i{width:10px;height:10px;border-radius:50%;background:var(--c);flex:none}
+.emos button[aria-pressed=true]{background:var(--c);color:#fff}
+.emos button[aria-pressed=true] i{background:#fff}
+.gt{margin:4px 0 -2px;font:800 15px var(--round);color:var(--coral2)}
+.emolink{border:0;background:#fff;border-radius:12px;padding:9px 12px;text-align:right;font:700 14px var(--round);color:var(--sea)}
+.chkhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chkhead b{font:800 18px var(--round);color:var(--sea)}
+.issue{background:#fff;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;border-right:5px solid var(--c)}
+.issue .ctx{font:400 15.5px/1.7 var(--sans);color:var(--muted)}
+.issue .ctx mark{background:color-mix(in srgb,var(--c) 28%,#fff);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+.issue .ty{align-self:flex-start;font:700 12px/1 var(--sans);color:#fff;background:var(--c);border-radius:999px;padding:4px 9px}
+.issue p{margin:0;font-size:13.5px;line-height:1.6;color:#4d4843}
+.issue .fx{display:flex;flex-wrap:wrap;gap:6px}
+.issue .fx .act{font-size:13.5px;padding:7px 12px}
+.ok{margin:0;background:#fff;border-radius:14px;padding:14px;font-size:15px;text-align:center}
+.ok b{display:block;font:800 20px var(--round);color:var(--sea)}
+.chk{border:0;background:var(--coral);color:#fff;border-radius:999px;padding:7px 14px;font:700 14px var(--round);box-shadow:0 3px 0 var(--coral2)}
+.strips .act{padding:6px 12px;font-size:13px;flex:none}
 .worlds{display:flex;flex-wrap:wrap;gap:6px}
-.worlds button{border:0;border-radius:999px;padding:7px 12px;font:600 14px/1.2 var(--sans);background:color-mix(in srgb,var(--c) 18%,#fff);color:var(--ink);border:2px solid color-mix(in srgb,var(--c) 45%,#fff)}
-.worlds button[aria-pressed=true]{background:var(--c);color:#fff;border-color:var(--c)}
+.worlds button{border:2px solid color-mix(in srgb,var(--c) 45%,#fff);border-radius:999px;padding:6px 12px;font:600 13.5px var(--sans);background:color-mix(in srgb,var(--c) 16%,#fff)}
+.worlds button[aria-pressed=true]{background:var(--c);border-color:var(--c);color:#fff}
 .lads{display:flex;flex-direction:column;gap:6px}
-.lads button{display:flex;flex-direction:column;align-items:flex-start;text-align:right;border:0;border-radius:14px;padding:9px 12px;background:var(--sand);gap:2px}
-.lads button b{font:700 17px/1.2 var(--round);color:var(--sea)}
-.lads button span{font-size:13.5px;color:var(--muted)}
-.empty{font-size:14.5px;color:var(--muted);background:var(--sand);border-radius:14px;padding:12px 14px;margin:0}
+.lads button{display:flex;flex-direction:column;align-items:flex-start;text-align:right;border:0;border-radius:12px;padding:8px 12px;background:var(--paper);gap:1px}
+.lads b{font:700 16px/1.25 var(--round);color:var(--sea)}
+.lads span{font-size:13px;color:var(--muted)}
+.empty{margin:0;font-size:14.5px;color:#4d4843;background:rgba(255,255,255,.65);border-radius:12px;padding:12px 14px}
 .fab{display:none}
 
-/* done */
-.done{grid-column:1/-1;background:var(--paper);border-radius:28px;padding:34px 28px;text-align:center;box-shadow:0 6px 18px rgba(22,90,99,.07)}
-.done h2{margin:6px 0;font:800 36px/1.2 var(--round);color:var(--sea)}
-.done .ref{display:inline-block;margin:10px 0;padding:8px 18px;border-radius:14px;background:var(--mint);font:800 22px/1.2 var(--round);color:var(--sea);letter-spacing:.04em;direction:ltr}
-.done p{color:var(--muted);max-width:560px;margin:6px auto}
+/* أوراق إضافية */
+.extra{padding:4px 0 26px}
+.extra .in{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.slip{background:var(--paper);border-radius:4px;padding:18px 20px 14px;box-shadow:0 12px 24px -18px rgba(60,35,20,.5);border-top:6px solid var(--c)}
+.slip h3{margin:0;font:800 19px var(--round);color:var(--sea)}
+.slip h3 small{font:500 13px var(--sans);color:var(--muted)}
+.slip textarea{width:100%;min-height:132px;margin-top:6px;border:0;resize:vertical;padding:0;font:400 17px/33px var(--sans);background:transparent repeating-linear-gradient(transparent 0 32px,var(--line) 32px 33px);background-attachment:local}
+.slip textarea:focus{outline:none}
 
-@media (max-width:980px){
-  .page{grid-template-columns:minmax(0,1fr)}
-  .box{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:40;border-radius:24px 24px 0 0;max-height:72vh;transform:translateY(105%);transition:transform .3s ease;padding-bottom:env(safe-area-inset-bottom,0px)}
-  .box.open{transform:none}
+/* البطاقات */
+.cards{padding:10px 0 34px}
+.cards .in{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.card{position:relative;border-radius:6px;padding:22px 24px 24px;box-shadow:0 14px 26px -18px rgba(60,35,20,.5);min-width:0}
+.card.lib{background:var(--card);border-top:10px solid var(--coral)}
+.card.ok{background:var(--paper);border-top:10px solid var(--sea)}
+.card h2{margin:0 0 6px;font:800 23px var(--round);color:var(--sea)}
+.card .s{margin:0 0 6px;font-size:13.5px;color:var(--muted)}
+.row{display:flex;align-items:flex-end;gap:10px;margin:10px 0}
+.row label{font:600 14px var(--sans);white-space:nowrap;min-width:104px;padding-bottom:6px}
+.row label em{font-style:normal;color:var(--coral2)}
+.row input,.row select{flex:1;min-width:0;border:0;border-bottom:2px dotted #c7b69e;background:transparent;padding:2px 2px 4px;font:700 20px/1.5 var(--hand);color:var(--ink);border-radius:0;min-height:42px}
+.row select{font:600 17px var(--sans);appearance:none;-webkit-appearance:none;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23165a63' stroke-width='2'/%3E%3C/svg%3E") no-repeat left 6px center/12px}
+.row input:focus,.row select:focus{outline:none;border-bottom:2px solid var(--sea)}
+.row input.code{font:800 20px var(--round);letter-spacing:2px;direction:ltr;text-align:right}
+.row input[type=tel]{font:600 18px var(--sans);direction:ltr;text-align:right}
+.help{margin:-4px 0 0 0;padding-right:114px;font-size:12.5px;color:var(--muted)}
+.stamp{position:absolute;left:22px;top:16px;width:80px;height:80px;border:3px solid var(--coral);border-radius:50%;display:grid;place-items:center;transform:rotate(-14deg);color:var(--coral);font:800 15px/1.1 var(--round);text-align:center;opacity:.85;pointer-events:none}
+.consent{display:flex;gap:12px;align-items:flex-start;background:var(--sandbg);padding:14px;border-radius:12px;margin-top:16px}
+.consent input{width:26px;height:26px;margin:2px 0 0;flex:none;accent-color:var(--sea)}
+.consent label{font-size:15px;line-height:1.7}
+.bad{border-bottom-color:var(--err)!important;background-color:rgba(184,65,44,.06)!important}
+.consent.bad{outline:2px solid var(--err)}
+.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}
+
+.send{text-align:center;padding:6px 0 80px}
+.send .btn{font-size:23px;padding:18px 38px 16px}
+.msg{display:block;min-height:26px;margin-top:14px;font-weight:600;font-size:15px}
+.msg.err{color:var(--err)}
+.send p{margin:4px auto 0;color:var(--muted);font-size:14px;max-width:520px}
+
+/* بعد الإرسال */
+.done{padding:70px 0 90px;text-align:center}
+.done .lock{margin:0 auto 10px;width:min(300px,90%)}
+.done h1{margin:6px 0;font:800 clamp(32px,5vw,46px)/1.2 var(--round);color:var(--sea)}
+.done p{color:var(--muted);max-width:560px;margin:6px auto}
+.done .ref{display:inline-block;margin:14px 0 4px;padding:10px 22px;border-radius:14px;background:var(--mint);font:800 24px/1.2 var(--round);color:var(--sea);letter-spacing:.05em;direction:ltr}
+
+@media (max-width:900px){
+  .hdr nav{display:none}
+  .hdr .in{grid-template-columns:1fr auto 1fr;height:62px}
+  .hdr .logo{width:96px}
+  .back{display:block}
+  .hero{padding-top:calc(24px + var(--scal))}
+  .hero .in{flex-direction:column;align-items:flex-start}
+  .desk{padding-top:36px}
+  .desk .in,.extra .in,.cards .in{grid-template-columns:minmax(0,1fr)}
+  .nb{padding:36px 16px 18px 12px}
+  .nb::after{right:40px}
+  .nb .pad{margin-right:34px}
+  #fTitle{font-size:26px}
+  #fText{font-size:19px;min-height:330px}
+  .note{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:60;transform:translateY(105%);border-radius:22px 22px 0 0;max-height:76vh;transition:transform .3s ease;padding:20px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .note::before{display:none}
+  .note.open{transform:none}
   .x{display:grid;place-items:center}
-  .fab{display:flex;position:fixed;z-index:30;bottom:max(16px,env(safe-area-inset-bottom,0px));left:max(16px,env(safe-area-inset-left,0px));align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 18px;background:var(--coral);color:#fff;font:800 17px/1 var(--round);box-shadow:0 6px 18px rgba(201,105,76,.45)}
-  .grid2{grid-template-columns:minmax(0,1fr)}
-  fieldset{padding:18px 16px}
-  .top h1{display:none}
-  .top .in{justify-content:space-between}
-  .saved{display:none}
+  .fab{display:flex;position:fixed;z-index:55;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:max(16px,env(safe-area-inset-left,0px));align-items:center;gap:6px;border:0;border-radius:999px;padding:12px 18px;background:var(--sea);color:#fff;font:800 16px/1 var(--round);box-shadow:0 8px 20px rgba(13,60,66,.4)}
+  .fab svg{width:26px;height:26px;background:var(--sandbg);border-radius:50%}
+  .row{flex-wrap:wrap;gap:0}
+  .row label{min-width:100%;padding-bottom:0}
+  .help{padding-right:0}
+  .stamp{width:64px;height:64px;font-size:12px;left:14px;top:12px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="in">
-    <a class="logo" href="./" aria-label="مكتبة رفوف — الرئيسية">
-      <svg viewBox="7 6 300 128" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M287 56 C292 76 285 93 265 101"/><circle cx="225" cy="58" r="13.5"/><path d="M246 71.5 H172"/><circle cx="157" cy="58" r="13.5"/><path d="M170.5 63 C171 86 157 99 135 101"/><circle cx="97" cy="58" r="13.5"/><path d="M110.5 71.5 H52 C40 71.5 33 65 33 52"/></g><rect x="219" y="14" width="13" height="23" rx="2.5" fill="#ffcf6e" transform="rotate(-9 225 26)"/><rect x="91" y="14" width="13" height="23" rx="2.5" fill="#e98b6d" transform="rotate(7 97 26)"/><rect x="20" y="109" width="286" height="8" rx="4" fill="#c99556"/></svg>
-    </a>
-    <h1>أرسل قصتك</h1>
-    <span class="saved" id="saved" role="status">حُفظت المسوّدة على هذا الجهاز ✓</span>
-    <button class="pill" type="button" id="saveBtn">حفظ المسوّدة</button>
+<header class="hdr">
+  <div class="wrap in">
+    <nav class="r"><a href="./#books">القصص</a><a href="./#about">هويّتنا</a><a href="./#devices">في كل مكان</a></nav>
+    <a class="back" href="./">→ المكتبة</a>
+    <a class="logo" href="./" aria-label="مكتبة رفوف — الرئيسية"><svg viewBox="7 6 300 128" aria-label="رفوف"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M287 56 C292 76 285 93 265 101"/><circle cx="225" cy="58" r="13.5"/><path d="M246 71.5 H172"/><circle cx="157" cy="58" r="13.5"/><path d="M170.5 63 C171 86 157 99 135 101"/><circle cx="97" cy="58" r="13.5"/><path d="M110.5 71.5 H52 C40 71.5 33 65 33 52"/></g><rect x="219" y="14" width="13" height="23" rx="2.5" fill="#e98b6d" transform="rotate(-9 225 26)"/><rect x="91" y="14" width="13" height="23" rx="2.5" fill="#ffcf6e" transform="rotate(7 97 26)"/><rect x="20" y="109" width="286" height="8" rx="4" fill="#c99556"/></svg></a>
+    <nav class="l"><a href="./#quotes">من دفاترهم</a><a href="send.html" class="on" aria-current="page">أرسل قصتك</a></nav>
   </div>
 </header>
 
-<main class="page" id="page">
-  <div class="intro">
+<main id="main">
+<section class="hero">
+  <div class="wrap in">
     <div>
-      <h2>قصّتك التالية… على الرف</h2>
-      <p>اكتب قصتك هنا، وما تكتبه يُحفظ تلقائيًا على جهازك فتكمله متى شئت. وإن احتجت كلمة أجمل، فاختر أي كلمة في قصتك ليفتح لك <b>صندوق الكلمات</b> سُلَّمها وتعبيراتها.</p>
+      <h1 style="margin:0"><svg class="lock" viewBox="-36 0 366 120" role="img" aria-label="أرسل قصتك" style="direction:rtl;max-width:100%;height:auto">
+<g transform="translate(210 0)"><g>
+<rect x="8" y="98" width="104" height="9" rx="4.5" fill="#c99556"/>
+<rect x="14" y="40" width="20" height="58" rx="4" fill="#165a63" transform="rotate(-6 24 98)"/>
+<rect x="18" y="47" width="10" height="3" rx="1.5" fill="#fff" opacity=".6" transform="rotate(-6 24 98)"/>
+<rect x="38" y="30" width="20" height="68" rx="4" fill="#e98b6d"/>
+<rect x="43" y="37" width="10" height="3" rx="1.5" fill="#fff" opacity=".7"/>
+<rect x="64" y="34" width="22" height="64" rx="5" fill="#fff8ec" stroke="#165a63" stroke-width="3.2" stroke-dasharray="6 5"/>
+<path d="M75 55v20M65 65h20" stroke="#e98b6d" stroke-width="4.5" stroke-linecap="round"/>
+<rect x="92" y="46" width="18" height="52" rx="4" fill="#ffcf6e" transform="rotate(8 101 98)"/>
+<path d="M100 22l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#ffcf6e"/>
+</g></g>
+<text x="200" y="70" text-anchor="start" direction="rtl" style="font:800 46px 'Baloo Bhaijaan 2',sans-serif" fill="#165a63">أرسل قصتك</text>
+<text x="200" y="100" text-anchor="start" direction="rtl" style="font:600 15px Readex Pro,sans-serif;letter-spacing:.5px" fill="#c9694c">من دفترك إلى الرف</text>
+</svg></h1>
+      <p>اكتب قصتك على هذا الدفتر، وما تكتبه يُحفظ وحده على جهازك. وإن احتجت كلمة أجمل، اختر أي كلمة في قصتك فيفتح لك صندوق الكلمات سُلَّمها.</p>
     </div>
-    <div class="steps" aria-hidden="true"><span><b>١</b> عن الكاتب</span><span><b>٢</b> القصة</span><span><b>٣</b> موافقة وليّ الأمر</span></div>
+    <ol class="steps" aria-label="الخطوات">
+      <li><i style="--c:var(--coral)">١</i>دفتر القصة</li>
+      <li><i style="--c:var(--wood)">٢</i>بطاقة الكاتب</li>
+      <li><i style="--c:var(--sea)">٣</i>إذن وليّ الأمر</li>
+    </ol>
   </div>
+</section>
 
-  <form id="form" novalidate>
-    <fieldset style="--c:var(--sea)">
-      <legend><i>١</i>عن الكاتب</legend>
-      <div class="grid2">
-        <div class="f"><label for="fName">اسم الطالب الثلاثي <em>*</em></label><input type="text" id="fName" maxlength="60" autocomplete="off" required></div>
-        <div class="f"><label for="fGrade">الصف <em>*</em></label>
-          <select id="fGrade" required><option value="">اختر الصف</option><option>الأول</option><option>الثاني</option><option>الثالث</option><option>الرابع</option><option>الخامس</option><option>السادس</option><option>السابع فما فوق</option></select></div>
-        <div class="f"><label for="fSchool">المدرسة</label><input type="text" id="fSchool" maxlength="80"></div>
-        <div class="f"><label for="fCode">رمز الصف <em>*</em></label><input type="text" id="fCode" maxlength="20" autocomplete="off" required><small>تعطيك إياه معلمتك.</small></div>
+<form id="form" novalidate>
+<section class="desk">
+  <div class="wrap in">
+    <div class="nb">
+      <div class="pad">
+        <label class="lbl" for="fTitle">عنوان القصة <em>*</em></label>
+        <input type="text" id="fTitle" maxlength="80" autocomplete="off" placeholder="اكتب العنوان هنا">
+        <div class="lines">
+          <label class="lbl" for="fText" style="position:absolute;clip-path:inset(50%)">نص القصة</label>
+          <textarea id="fText" placeholder="كان يا ما كان…"></textarea>
+        </div>
+        <div class="nbfoot">
+          <span>عدد الكلمات: <b id="wc">٠</b></span>
+          <span class="hint">✨ اختر كلمة في قصتك لتفتح صندوق الكلمات</span>
+          <button type="button" class="chk" id="chkBtn">✓ دقّق قصتي</button>
+          <span><span id="saved" role="status"></span> <button type="button" class="tiny" id="saveBtn">حفظ المسوّدة</button></span>
+        </div>
       </div>
-    </fieldset>
-
-    <fieldset style="--c:var(--coral)">
-      <legend><i>٢</i>القصة</legend>
-      <div class="f"><label for="fTitle">عنوان القصة <em>*</em></label><input class="title-in" type="text" id="fTitle" maxlength="80" required></div>
-      <div class="f" style="margin-top:14px">
-        <label for="fText">نص القصة <em>*</em></label>
-        <div class="paperwrap"><textarea id="fText" required placeholder="كان يا ما كان…"></textarea></div>
-        <div class="textbar"><span>عدد الكلمات: <b id="wc">٠</b></span><span class="hint">✨ اختر كلمة في قصتك لتفتح صندوق الكلمات</span></div>
-      </div>
-      <div class="grid2" style="margin-top:14px">
-        <div class="f"><label for="fIdeas">أفكار للرسومات <small>(اختياري)</small></label><textarea class="small" id="fIdeas" maxlength="1500" placeholder="كيف تتخيّل أبطال قصتك والمكان؟"></textarea></div>
-        <div class="f"><label for="fAbout">عرّفنا بنفسك <small>(اختياري، لصفحة الكاتب)</small></label><textarea class="small" id="fAbout" maxlength="600" placeholder="هواياتي، ولماذا كتبت هذه القصة…"></textarea></div>
-      </div>
-    </fieldset>
-
-    <fieldset style="--c:var(--wood)">
-      <legend><i>٣</i>موافقة وليّ الأمر</legend>
-      <div class="grid2">
-        <div class="f"><label for="fParent">اسم وليّ الأمر <em>*</em></label><input type="text" id="fParent" maxlength="60" required></div>
-        <div class="f"><label for="fContact">رقم للتواصل <small>(اختياري)</small></label><input type="tel" id="fContact" maxlength="20" inputmode="tel" dir="ltr"><small>لا يظهر في الموقع، ويصل إلى المعلمة فقط.</small></div>
-      </div>
-      <div class="consent">
-        <input type="checkbox" id="fOk" required>
-        <label for="fOk">أوافق بصفتي وليّ أمر الطالب على إرسال هذه القصة إلى مكتبة رفوف، وعلى نشرها باسمه بعد مراجعة المعلمة، وأقرّ بأنها من تأليفه.</label>
-      </div>
-    </fieldset>
-
-    <div class="hp" aria-hidden="true"><label for="fHp">اتركه فارغًا</label><input type="text" id="fHp" tabindex="-1" autocomplete="off"></div>
-
-    <div class="sendrow">
-      <button class="big" type="submit" id="sendBtn">أرسل القصة ←</button>
-      <span class="msg" id="msg" role="status" aria-live="polite"></span>
     </div>
-    <p class="alt">تصل القصة إلى المعلمة لتراجعها قبل النشر. وإن واجهتك مشكلة، يمكنك <a href="https://docs.google.com/forms/d/e/1FAIpQLSdI0xPUOlzXS_yQZuTaqn8QybDI5Ttw38DxTa26rnrskWf_0Q/viewform?usp=header" target="_blank" rel="noopener">الإرسال عبر النموذج</a>.</p>
-  </form>
 
-  <aside class="box" id="box" aria-label="صندوق الكلمات">
-    <div class="boxhead">
-      <div><b>صندوق الكلمات</b><small>من «سُلَّم المعنى»: كلمات أدقّ وتعبيرات أجمل</small></div>
-      <button class="x" type="button" id="boxX" aria-label="إغلاق صندوق الكلمات">×</button>
-    </div>
-    <div class="boxbody">
-      <div class="bsearch"><input type="text" id="bq" placeholder="ابحث: خائف، يركض، مطر…" aria-label="ابحث في صندوق الكلمات"></div>
+    <aside class="note" id="box" aria-label="صندوق الكلمات">
+      <div class="nhead"><h2><svg viewBox="0 0 120 120" aria-hidden="true"><g>
+<rect x="8" y="98" width="104" height="9" rx="4.5" fill="#c99556"/>
+<rect x="14" y="40" width="20" height="58" rx="4" fill="#165a63" transform="rotate(-6 24 98)"/>
+<rect x="18" y="47" width="10" height="3" rx="1.5" fill="#fff" opacity=".6" transform="rotate(-6 24 98)"/>
+<rect x="38" y="30" width="20" height="68" rx="4" fill="#e98b6d"/>
+<rect x="43" y="37" width="10" height="3" rx="1.5" fill="#fff" opacity=".7"/>
+<rect x="64" y="34" width="22" height="64" rx="5" fill="#fff8ec" stroke="#165a63" stroke-width="3.2" stroke-dasharray="6 5"/>
+<path d="M75 55v20M65 65h20" stroke="#e98b6d" stroke-width="4.5" stroke-linecap="round"/>
+<rect x="92" y="46" width="18" height="52" rx="4" fill="#ffcf6e" transform="rotate(8 101 98)"/>
+<path d="M100 22l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#ffcf6e"/>
+</g></svg>صندوق الكلمات</h2><button class="x" type="button" id="boxX" aria-label="إغلاق صندوق الكلمات">×</button></div>
+      <p class="nsub">من «سُلَّم المعنى»: كلمات أدقّ وتعبيرات أجمل</p>
+      <input class="bq" type="text" id="bq" placeholder="ابحث: خائف، يركض، مطر…" aria-label="ابحث في صندوق الكلمات">
       <div class="tabs" role="tablist">
         <button type="button" role="tab" id="tLad" aria-selected="true">سُلَّم الكلمة</button>
         <button type="button" role="tab" id="tExp" aria-selected="false">تعبيرات</button>
+        <button type="button" role="tab" id="tEmo" aria-selected="false">مشاعر</button>
         <button type="button" role="tab" id="tAll" aria-selected="false">الحقول</button>
       </div>
       <div id="bview"></div>
+    </aside>
+  </div>
+</section>
+
+<section class="extra">
+  <div class="wrap in">
+    <div class="slip" style="--c:var(--sun)"><h3><label for="fIdeas">أفكار للرسومات</label> <small>(اختياري)</small></h3><textarea id="fIdeas" maxlength="1500" placeholder="كيف تتخيّل أبطال قصتك والمكان؟"></textarea></div>
+    <div class="slip" style="--c:var(--mint)"><h3><label for="fAbout">عرّفنا بنفسك</label> <small>(اختياري، لصفحة الكاتب)</small></h3><textarea id="fAbout" maxlength="600" placeholder="هواياتي، ولماذا كتبت هذه القصة…"></textarea></div>
+  </div>
+</section>
+
+<section class="cards">
+  <div class="wrap in">
+    <div class="card lib">
+      <div class="stamp" aria-hidden="true">مكتبة<br>رفوف</div>
+      <h2>بطاقة الكاتب</h2><p class="s">تُكتب على غلاف قصتك.</p>
+      <div class="row"><label for="fName">الاسم الثلاثي <em>*</em></label><input type="text" id="fName" maxlength="60" autocomplete="off"></div>
+      <div class="row"><label for="fGrade">الصف <em>*</em></label><select id="fGrade"><option value="">اختر الصف</option><option>الأول</option><option>الثاني</option><option>الثالث</option><option>الرابع</option><option>الخامس</option><option>السادس</option><option>السابع فما فوق</option></select></div>
+      <div class="row"><label for="fSchool">المدرسة</label><input type="text" id="fSchool" maxlength="80"></div>
     </div>
-  </aside>
+    <div class="card ok">
+      <h2>إذن وليّ الأمر</h2><p class="s">لا تُنشر قصة دون موافقة وليّ الأمر.</p>
+      <div class="row"><label for="fParent">اسم وليّ الأمر <em>*</em></label><input type="text" id="fParent" maxlength="60"></div>
+      <div class="row"><label for="fContact">رقم للتواصل</label><input type="tel" id="fContact" maxlength="20" inputmode="tel"></div>
+      <p class="help">اختياري، ولا يظهر في الموقع.</p>
+      <div class="consent" id="okBox">
+        <input type="checkbox" id="fOk">
+        <label for="fOk">أوافق بصفتي وليّ أمر الطالب على إرسال هذه القصة إلى مكتبة رفوف، وعلى نشرها باسمه بعد مراجعة المعلمة، وأقرّ بأنها من تأليفه.</label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hp" aria-hidden="true"><label for="fHp">اتركه فارغًا</label><input type="text" id="fHp" tabindex="-1" autocomplete="off"></div>
+
+<section class="send">
+  <button class="btn coral" type="submit" id="sendBtn">أرسل قصتك إلى الرف ←</button>
+  <span class="msg" id="msg" role="status" aria-live="polite"></span>
+  <p>تصل القصة إلى المعلمة لتراجعها قبل النشر. وإن واجهتك مشكلة، يمكنك <a href="https://docs.google.com/forms/d/e/1FAIpQLSdI0xPUOlzXS_yQZuTaqn8QybDI5Ttw38DxTa26rnrskWf_0Q/viewform?usp=header" target="_blank" rel="noopener">الإرسال عبر النموذج القديم</a>.</p>
+</section>
+</form>
 </main>
 
-<button class="fab" type="button" id="fab" aria-controls="box">✨ صندوق الكلمات</button>
+<button class="fab" type="button" id="fab" aria-controls="box"><svg viewBox="0 0 120 120" aria-hidden="true"><g>
+<rect x="8" y="98" width="104" height="9" rx="4.5" fill="#c99556"/>
+<rect x="14" y="40" width="20" height="58" rx="4" fill="#165a63" transform="rotate(-6 24 98)"/>
+<rect x="18" y="47" width="10" height="3" rx="1.5" fill="#fff" opacity=".6" transform="rotate(-6 24 98)"/>
+<rect x="38" y="30" width="20" height="68" rx="4" fill="#e98b6d"/>
+<rect x="43" y="37" width="10" height="3" rx="1.5" fill="#fff" opacity=".7"/>
+<rect x="64" y="34" width="22" height="64" rx="5" fill="#fff8ec" stroke="#165a63" stroke-width="3.2" stroke-dasharray="6 5"/>
+<path d="M75 55v20M65 65h20" stroke="#e98b6d" stroke-width="4.5" stroke-linecap="round"/>
+<rect x="92" y="46" width="18" height="52" rx="4" fill="#ffcf6e" transform="rotate(8 101 98)"/>
+<path d="M100 22l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#ffcf6e"/>
+</g></svg>صندوق الكلمات</button>
 
+<script src="checker.js"></script>
 <script>
 (function(){
   /* رابط تطبيق Apps Script نفسه الذي يستقبل آراء القرّاء */
@@ -229,32 +358,33 @@ textarea.small{min-height:96px;resize:vertical;line-height:1.7}
   var DRAFT = "rufuf-story-draft-v1";
   var $ = function(id){ return document.getElementById(id); };
   var AR = function(n){ return String(n).replace(/\d/g, function(d){ return "٠١٢٣٤٥٦٧٨٩"[d]; }); };
-  var FIELDS = ["fName","fGrade","fSchool","fCode","fTitle","fText","fIdeas","fAbout","fParent","fContact"];
+  var FIELDS = ["fName","fGrade","fSchool","fTitle","fText","fIdeas","fAbout","fParent","fContact"];
   var words = function(v){ return (String(v).trim().match(/\S+/g) || []).length; };
+  var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); };
 
   /* ---------------- المسوّدة ---------------- */
+  var sent = false, t, savedT;
   function load(){ try { return JSON.parse(localStorage.getItem(DRAFT) || "null"); } catch(e){ return null; } }
-  var sent = false;
   function save(show){
     if (sent || !$("fName")) return;
     var d = {}; FIELDS.forEach(function(k){ d[k] = $(k).value; }); d.fOk = $("fOk").checked; d.at = Date.now();
     try { localStorage.setItem(DRAFT, JSON.stringify(d)); if (show) flash(); } catch(e){}
   }
-  var savedT; function flash(){ $("saved").classList.add("on"); $("saveBtn").textContent = "حُفظت ✓"; clearTimeout(savedT); savedT = setTimeout(function(){ $("saved").classList.remove("on"); $("saveBtn").textContent = "حفظ المسوّدة"; }, 2200); }
+  function flash(){ $("saved").textContent = "✓ حُفظت"; clearTimeout(savedT); savedT = setTimeout(function(){ if ($("saved")) $("saved").textContent = ""; }, 2200); }
   var d0 = load();
   if (d0){ FIELDS.forEach(function(k){ if (d0[k] != null) $(k).value = d0[k]; }); $("fOk").checked = !!d0.fOk; }
-  var t; document.getElementById("form").addEventListener("input", function(e){
+  $("form").addEventListener("input", function(e){
     if (e.target.classList) e.target.classList.remove("bad");
     clearTimeout(t); t = setTimeout(function(){ save(true); }, 700); wc();
   });
-  $("fOk").addEventListener("change", function(){ save(true); });
+  $("fOk").addEventListener("change", function(){ $("okBox").classList.remove("bad"); save(true); });
   $("saveBtn").onclick = function(){ save(true); };
   function wc(){ $("wc").textContent = AR(words($("fText").value)); }
   wc();
 
   /* ---------------- صندوق الكلمات ---------------- */
   var DATA = null, WD = {}, LD = {}, IDX = [];
-  var state = { tab:"lad", lad:null, rung:0, world:null, sel:{s:0,e:0,w:""}, q:"" };
+  var state = { tab:"lad", lad:null, rung:0, mineR:-1, world:null, sel:{s:0,e:0,w:""}, q:"" };
   var norm = function(s){ return (s||"").replace(/[ً-ْٰـ]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ؤ/g,"و").replace(/ئ/g,"ي").replace(/ة/g,"ه").replace(/[^ء-ي ]/g,"").trim(); };
   function variants(q){ var v = [q], add = function(x){ if (v.indexOf(x) < 0) v.push(x); };
     ["وال","فال","بال","كال","لل","ال","و","ف"].forEach(function(p){ if (q.indexOf(p) === 0 && q.length - p.length >= 2) add(q.slice(p.length)); });
@@ -283,44 +413,102 @@ textarea.small{min-height:96px;resize:vertical;line-height:1.7}
     render();
   }).catch(function(){ $("bview").innerHTML = '<p class="empty">تعذّر تحميل صندوق الكلمات الآن. يمكنك متابعة الكتابة والإرسال.</p>'; });
 
-  var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); };
+  var EMO = [], EM = {};
+  fetch("emotions.json").then(function(r){ return r.json(); }).then(function(d){
+    EMO = d; d.forEach(function(e){ EM[e.id] = e; e.keys = [norm(e.n)].concat(e.al.map(norm)); });
+    render();
+  }).catch(function(){});
+  function findEmo(raw){
+    var q = norm(raw); if (!q || !EMO.length) return null;
+    var V = variants(q);
+    for (var i = 0; i < EMO.length; i++){ if (V.some(function(v){ return EMO[i].keys.indexOf(v) > -1; })) return EMO[i]; }
+    return null;
+  }
+  var TYC = { "إملاء":"var(--coral2)", "ترقيم":"var(--sea)", "أسلوب":"var(--wood)", "تنبيه":"#d9a520" };
+  var ignored = {};
+  function runCheck(){
+    var txt = ta.value;
+    state.issues = (window.rufufCheck ? window.rufufCheck(txt) : []).map(function(o){ o.raw = txt.slice(o.s, o.e); return o; })
+      .filter(function(o){ return !ignored[o.raw + "|" + o.type]; });
+  }
+  function renderCheck(){
+    var v = $("bview"), L = state.issues || [], txt = ta.value;
+    var h = '<div class="chkhead"><b>تدقيق قصتك</b><button type="button" class="act soft" data-back="1">→ صندوق الكلمات</button></div>';
+    if (!txt.trim()) h += '<p class="empty">اكتب قصتك أولًا، ثم اضغط «دقّق قصتي».</p>';
+    else if (!L.length) h += '<p class="ok"><b>أحسنت! 🌟</b>لم أجد أخطاء شائعة في الإملاء أو الترقيم.</p>';
+    else h += '<p class="fine">وجدتُ ' + AR(L.length) + ' ' + (L.length > 10 ? 'ملاحظة' : 'ملاحظات') + '. راجع كلّ واحدة، وصحّحها إن رأيتها في مكانها.</p>'
+      + L.map(function(o, i){
+        var a = Math.max(0, o.s - 22), b = Math.min(txt.length, o.e + 22);
+        var ctx = (a > 0 ? '…' : '') + esc(txt.slice(a, o.s)) + '<mark>' + esc(o.raw.trim() ? o.raw : '␣') + '</mark>' + esc(txt.slice(o.e, b)) + (b < txt.length ? '…' : '');
+        return '<div class="issue" style="--c:' + (TYC[o.type] || 'var(--sea)') + '"><span class="ty">' + o.type + '</span><div class="ctx">' + ctx + '</div><p>' + esc(o.msg) + '</p><div class="fx">'
+          + o.fix.map(function(f, j){ return '<button type="button" class="act" data-fix="' + i + ':' + j + '">' + (f.trim() ? 'صحّحها: ' + esc(f.trim()) : 'صحّحها') + '</button>'; }).join("")
+          + '<button type="button" class="act soft" data-ign="' + i + '">تجاهل</button></div></div>'; }).join("");
+    h += '<p class="fine">المدقّق يلتقط الأخطاء الشائعة فقط، والمعلمة تراجع القصة كاملة قبل النشر.</p>';
+    v.innerHTML = h;
+  }
+  function applyFix(i, j){
+    var o = state.issues[i]; if (!o) return;
+    if (ta.value.slice(o.s, o.e) !== o.raw){ runCheck(); render(); return; }
+    ta.value = ta.value.slice(0, o.s) + o.fix[j] + ta.value.slice(o.e);
+    wc(); save(true); runCheck(); render();
+  }
 
   function render(){
     if (!DATA) return;
-    ["tLad","tExp","tAll"].forEach(function(id){ $(id).setAttribute("aria-selected", String(state.tab === {tLad:"lad",tExp:"exp",tAll:"all"}[id])); });
+    ["tLad","tExp","tEmo","tAll"].forEach(function(id){ $(id).setAttribute("aria-selected", String(state.mode !== "check" && state.tab === {tLad:"lad",tExp:"exp",tEmo:"emo",tAll:"all"}[id])); });
     var v = $("bview"), h = "";
-    if (state.q){
-      var hits = find(state.q);
-      h += hits.length ? '<div class="lads">' + hits.map(function(e){ var l = LD[e.l]; return '<button type="button" data-go="' + e.l + '" data-i="' + e.i + '"><b>' + esc(e.w) + '</b><span>' + esc(l.t) + ' · ' + esc(l.r[e.i][1]) + '</span></button>'; }).join("") + '</div>'
-                       : '<p class="empty">لم أجد «' + esc(state.q) + '» في الصندوق. جرّب كلمة قريبة منها، أو تصفّح الحقول.</p>';
+    if (state.mode === "check") return renderCheck();
+    if (state.tab === "emo" && !state.q){
+      h += '<div class="emos' + (EM[state.emo] ? ' one' : '') + '">' + EMO.map(function(e){ return '<button type="button" data-emo="' + e.id + '" style="--c:' + e.c + '" aria-pressed="' + (state.emo === e.id) + '"><i></i>' + esc(e.n) + '</button>'; }).join("") + '</div>';
+      var E = EM[state.emo];
+      if (E){
+        var k = 0; state._elist = [];
+        h += '<p class="ladt">تعبيرات عن ' + esc(E.n) + '</p>';
+        E.g.forEach(function(g){ h += '<p class="gt">' + esc(g.t) + '</p><div class="strips">' + g.x.map(function(x){ state._elist.push(x); return '<div><span>' + esc(x) + '</span><button type="button" class="act" data-eins="' + (k++) + '">أدرِج</button></div>'; }).join("") + '</div>'; });
+        h += '<p class="fine">إن كانت بطلة قصتك فتاة، فغيّر الكلمات لتناسبها، مثل: وجهه ← وجهها، احمرّ ← احمرّت.</p>';
+      } else h += '<p class="fine">اختر شعورًا لترى تعبيراته: في الوجه، وفي الجسد، وتشبيهات، وأفعال.</p>';
       v.innerHTML = h; return;
+    }
+    if (state.q){
+      var hits = find(state.q), qe = findEmo(state.q);
+      var eh = qe ? '<button type="button" class="emolink" data-emo="' + qe.id + '">✨ تعبيرات عن ' + esc(qe.n) + ' ←</button>' : '';
+      if (qe && !hits.length){ v.innerHTML = eh; return; }
+      v.innerHTML = eh + (hits.length ? '<div class="lads">' + hits.map(function(e){ var l = LD[e.l]; return '<button type="button" data-go="' + e.l + '" data-i="' + e.i + '"><b>' + esc(e.w) + '</b><span>' + esc(l.t) + ' · ' + esc(l.r[e.i][1]) + '</span></button>'; }).join("") + '</div>'
+                                : '<p class="empty">لم أجد «' + esc(state.q) + '» في الصندوق. جرّب كلمة قريبة منها، أو تصفّح الحقول.</p>');
+      return;
     }
     if (state.tab === "all"){
       h += '<div class="worlds">' + DATA.worlds.map(function(w){ return '<button type="button" data-world="' + w.id + '" style="--c:' + w.c + '" aria-pressed="' + (state.world === w.id) + '">' + esc(w.n) + '</button>'; }).join("") + '</div>';
-      if (state.world){
-        h += '<div class="lads">' + DATA.lads.filter(function(l){ return l.w === state.world; }).map(function(l){
-          return '<button type="button" data-go="' + l.id + '" data-i="0"><b>' + esc(l.t) + '</b><span>' + l.r.map(function(r){ return esc(r[0]); }).join(" · ") + '</span></button>'; }).join("") + '</div>';
-      } else h += '<p class="note">اختر حقلًا لترى سلالم كلماته.</p>';
+      h += state.world ? '<div class="lads">' + DATA.lads.filter(function(l){ return l.w === state.world; }).map(function(l){
+          return '<button type="button" data-go="' + l.id + '" data-i="0"><b>' + esc(l.t) + '</b><span>' + l.r.map(function(r){ return esc(r[0]); }).join(" · ") + '</span></button>'; }).join("") + '</div>'
+        : '<p class="fine">اختر حقلًا لترى سلالم كلماته.</p>';
       v.innerHTML = h; return;
     }
     if (!state.lad){
-      v.innerHTML = '<p class="empty">ظلّل كلمة في قصتك (أو ضع المؤشر عليها)، مثل: <b>خاف</b> أو <b>ركض</b> أو <b>مطر</b>، فيظهر لك سُلَّمها هنا. أو ابحث في الأعلى، أو تصفّح <b>الحقول</b>.</p>';
+      if (EM[state.emo]){ state.tab = "emo"; return render(); }
+      v.innerHTML = '<p class="empty">ظلّل كلمة في قصتك (أو ضع المؤشر عليها)، مثل: <b>خاف</b> أو <b>ركض</b> أو <b>مطر</b>، فيظهر سُلَّمها هنا. أو ابحث في الأعلى، أو تصفّح <b>الحقول</b>.</p>';
       return;
     }
     var l = LD[state.lad], r = l.r[state.rung], mine = state.sel.w;
-    if (mine) h += '<p class="mine">كلمتك: <b>' + esc(mine) + '</b></p>';
+    if (mine) h += '<p class="mine">كلمتك: <b>' + esc(mine) + '</b>' + (l.o ? ' — اصعد السُّلَّم لكلمة أقوى' : '') + '</p>';
+    var em = EM[state.emo]; if (em && state.tab === "lad") h += '<button type="button" class="emolink" data-emo="' + em.id + '">✨ ' + AR(16) + ' تعبيرًا عن ' + esc(em.n) + ' ←</button>';
     if (state.tab === "lad"){
       h += '<p class="ladt">' + esc(l.t) + '</p>';
-      h += '<div class="rungs">' + l.r.map(function(x, i){ return '<button type="button" class="rung" data-rung="' + i + '" aria-pressed="' + (i === state.rung) + '">' + esc(x[0]) + '</button>'; }).join("") + '</div>';
-      if (l.o) h += '<div class="ends"><span>أخفّ</span><span>أقوى</span></div>';
+      if (l.o && l.r.length <= 6){
+        var n = l.r.length;
+        h += '<div class="stairs">' + l.r.map(function(x, i){ var ht = Math.round(38 + 62 * i / Math.max(1, n - 1));
+          return '<button type="button" data-rung="' + i + '" style="height:' + ht + '%" class="' + (i === state.mineR ? 'mineR' : '') + '" aria-pressed="' + (i === state.rung) + '">' + esc(x[0]) + '</button>'; }).join("") + '</div><div class="ends"><span>أخفّ</span><span>أقوى</span></div>';
+      } else {
+        h += '<div class="chips">' + l.r.map(function(x, i){ return '<button type="button" data-rung="' + i + '" aria-pressed="' + (i === state.rung) + '">' + esc(x[0]) + '</button>'; }).join("") + '</div>';
+      }
       h += '<p class="mean">' + esc(r[0]) + ': ' + esc(r[1]) + '</p><p class="ex">مثال: ' + esc(r[2]) + '</p>';
-      h += '<div class="acts">' + (mine ? '<button type="button" class="act" data-do="replace">ضعها مكان «' + esc(mine) + '»</button>' : '') + '<button type="button" class="act soft" data-do="insert">أدرجها في القصة</button></div>';
-      h += '<p class="note">قد تحتاج أن تغيّر آخر الكلمة لتناسب جملتك، مثل: فزِع ← فزِعت.</p>';
+      h += '<div class="acts">' + (mine ? '<button type="button" class="act" data-do="replace">ضعها مكان «' + esc(mine) + '»</button>' : '') + '<button type="button" class="act soft" data-do="insert">أدرِجها في القصة</button></div>';
+      h += '<p class="fine">قد تحتاج أن تغيّر آخر الكلمة لتناسب جملتك، مثل: فزِع ← فزِعت.</p>';
     } else {
       var ex = (DATA.expr[l.id] || [])[state.rung] || [], all = (DATA.expr[l.id] || []).reduce(function(a, b){ return a.concat(b); }, []);
       var list = ex.length ? ex : all;
       h += '<p class="ladt">تعبيرات: ' + esc(r[0]) + '</p>';
-      h += list.length ? '<ul class="exl">' + list.map(function(t, i){ return '<li><span>' + esc(t) + '</span><button type="button" class="act" data-ins="' + i + '">أدرِج</button></li>'; }).join("") + '</ul>'
+      h += list.length ? '<div class="strips">' + list.map(function(s, i){ return '<div><span>' + esc(s) + '</span><button type="button" class="act" data-ins="' + i + '">أدرِج</button></div>'; }).join("") + '</div>'
                        : '<p class="empty">لا تعبيرات لهذا السُّلَّم بعد. جرّب سُلَّمًا آخر.</p>';
       state._list = list;
     }
@@ -329,22 +517,24 @@ textarea.small{min-height:96px;resize:vertical;line-height:1.7}
 
   /* اختيار كلمة من النص */
   var ta = $("fText");
-  function pick(){
+  function pick(force){
+    if (!force && document.activeElement !== ta) return;
     var s = ta.selectionStart, e = ta.selectionEnd, val = ta.value;
-    if (s === e){ // الكلمة التي عند المؤشر
-      var a = s, b = s;
+    if (s === e){ var a = s, b = s;
       while (a > 0 && /\S/.test(val[a-1])) a--;
       while (b < val.length && /\S/.test(val[b])) b++;
-      s = a; e = b;
-    }
+      s = a; e = b; }
     var w = val.slice(s, e).trim().replace(/^[«"(]+|[».,،؛:!؟?")]+$/g, "");
     if (!w || w.split(/\s+/).length > 3) return;
     var off = val.slice(s, e).indexOf(w); if (off > 0) s += off; e = s + w.length;
+    if (state.lad && state.sel.s === s && state.sel.e === e && state.sel.w === w) return;
     state.sel = { s:s, e:e, w:w };
-    var hit = find(w)[0];
-    if (hit){ state.lad = hit.l; state.rung = hit.i; if (state.tab === "all") state.tab = "lad"; state.q = ""; $("bq").value = ""; }
+    var hit = find(w)[0], he = findEmo(w);
+    state.emo = he ? he.id : (hit ? null : state.emo);
+    if (hit){ state.lad = hit.l; state.rung = hit.i; state.mineR = hit.i; if (state.tab === "all") state.tab = "lad"; state.q = ""; $("bq").value = ""; }
     else if (state.tab !== "all"){ state.lad = null; }
-    render();
+    if (he && !hit) state.tab = "emo";
+    if (state.mode !== "check") render();
   }
   ["select","mouseup","keyup","touchend"].forEach(function(ev){ ta.addEventListener(ev, function(e){ if (e.type === "keyup" && !/Arrow|Home|End|Shift/.test(e.key)) return; setTimeout(pick, 0); }); });
 
@@ -353,72 +543,78 @@ textarea.small{min-height:96px;resize:vertical;line-height:1.7}
     if (!replace){ var before = val.slice(0, s); if (before && !/\s$/.test(before)) str = " " + str; if (val.slice(e) && !/^\s/.test(val.slice(e))) str = str + " "; }
     ta.value = val.slice(0, s) + str + val.slice(e);
     var c = s + str.length; ta.focus(); ta.setSelectionRange(c, c);
-    state.sel = { s:s, e:s + str.length, w: replace ? str : state.sel.w };
-    wc(); save(true); closeBox();
+    state.sel = { s:s, e:s + str.length, w: replace ? str.trim() : state.sel.w };
+    if (replace) state.mineR = state.rung;
+    wc(); save(true); closeBox(); render();
   }
 
   $("bview").addEventListener("click", function(e){
     var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.back){ state.mode = "box"; render(); return; }
+    if (b.dataset.fix){ var fj = b.dataset.fix.split(":"); return applyFix(+fj[0], +fj[1]); }
+    if (b.dataset.ign){ var oi = state.issues[+b.dataset.ign]; ignored[oi.raw + "|" + oi.type] = 1; runCheck(); render(); return; }
+    if (b.dataset.emo){ state.emo = b.dataset.emo; state.tab = "emo"; state.q = ""; $("bq").value = ""; render(); $("bview").scrollTop = 0; return; }
+    if (b.dataset.eins != null && state._elist) return putText(state._elist[+b.dataset.eins], false);
     if (b.dataset.world){ state.world = b.dataset.world; render(); return; }
-    if (b.dataset.go){ state.lad = b.dataset.go; state.rung = +b.dataset.i || 0; state.tab = "lad"; state.q = ""; $("bq").value = ""; render(); return; }
+    if (b.dataset.go){ state.lad = b.dataset.go; state.rung = +b.dataset.i || 0; state.mineR = -1; state.tab = "lad"; state.q = ""; $("bq").value = ""; render(); return; }
     if (b.dataset.rung){ state.rung = +b.dataset.rung; render(); return; }
     var l = state.lad && LD[state.lad];
     if (b.dataset.do === "replace" && l) return putText(l.r[state.rung][0], true);
     if (b.dataset.do === "insert" && l) return putText(l.r[state.rung][0], false);
     if (b.dataset.ins != null && state._list) return putText(state._list[+b.dataset.ins], false);
   });
-  $("tLad").onclick = function(){ state.tab = "lad"; state.q = ""; $("bq").value = ""; render(); };
-  $("tExp").onclick = function(){ state.tab = "exp"; state.q = ""; $("bq").value = ""; render(); };
-  $("tAll").onclick = function(){ state.tab = "all"; state.q = ""; $("bq").value = ""; render(); };
-  $("bq").addEventListener("input", function(){ state.q = this.value.trim(); render(); });
+  $("tEmo").onclick = function(){ state.mode = "box"; state.tab = "emo"; state.q = ""; $("bq").value = ""; render(); };
+  $("chkBtn").onclick = function(){ state.mode = "check"; runCheck(); render(); openBox(); if (innerWidth > 900) $("box").scrollIntoView({ block:"nearest", behavior:"smooth" }); };
+  $("tLad").onclick = function(){ state.mode = "box"; state.tab = "lad"; state.q = ""; $("bq").value = ""; render(); };
+  $("tExp").onclick = function(){ state.mode = "box"; state.tab = "exp"; state.q = ""; $("bq").value = ""; render(); };
+  $("tAll").onclick = function(){ state.mode = "box"; state.tab = "all"; state.q = ""; $("bq").value = ""; render(); };
+  $("bq").addEventListener("keydown", function(e){ if (e.key === "Enter") e.preventDefault(); });
+  $("bq").addEventListener("input", function(){ state.q = this.value.trim(); state.mode = "box"; render(); });
 
-  /* الصندوق على الهاتف */
   var box = $("box");
   function openBox(){ box.classList.add("open"); }
   function closeBox(){ box.classList.remove("open"); }
-  $("fab").onclick = function(){ pick(); openBox(); };
+  $("fab").onclick = function(){ pick(true); openBox(); };
   $("boxX").onclick = closeBox;
 
   /* ---------------- الإرسال ---------------- */
   $("form").addEventListener("submit", function(e){
     e.preventDefault();
     var msg = $("msg"); msg.className = "msg"; msg.textContent = "";
-    var miss = ["fName","fGrade","fCode","fTitle","fText","fParent"].filter(function(k){ return !$(k).value.trim(); });
+    var miss = ["fTitle","fText","fName","fGrade","fParent"].filter(function(k){ return !$(k).value.trim(); });
     miss.forEach(function(k){ $(k).classList.add("bad"); });
     if (miss.length){ msg.className = "msg err"; msg.textContent = "أكمل الحقول المعلَّمة بالأحمر."; $(miss[0]).focus(); return; }
     if (words($("fText").value) < 30){ msg.className = "msg err"; msg.textContent = "القصة قصيرة جدًا؛ اكتب ٣٠ كلمة على الأقل."; $("fText").focus(); return; }
-    if (!$("fOk").checked){ msg.className = "msg err"; msg.textContent = "نحتاج موافقة وليّ الأمر قبل الإرسال."; $("fOk").focus(); return; }
-    var data = { type:"story", hp:$("fHp").value, n:$("fName").value.trim(), g:$("fGrade").value, sc:$("fSchool").value.trim(), cc:$("fCode").value.trim(),
+    if (!$("fOk").checked){ msg.className = "msg err"; msg.textContent = "نحتاج موافقة وليّ الأمر قبل الإرسال."; $("okBox").classList.add("bad"); $("fOk").focus(); return; }
+    var data = { type:"story", hp:$("fHp").value, n:$("fName").value.trim(), g:$("fGrade").value, sc:$("fSchool").value.trim(),
       ti:$("fTitle").value.trim(), tx:$("fText").value.trim(), il:$("fIdeas").value.trim(), ab:$("fAbout").value.trim(),
       pn:$("fParent").value.trim(), pc:$("fContact").value.trim(), ok:true };
     var btn = $("sendBtn"); btn.disabled = true; btn.textContent = "جارٍ الإرسال…";
     var body = JSON.stringify(data);
+    function fail(text){ btn.disabled = false; btn.textContent = "أرسل قصتك إلى الرف ←"; msg.className = "msg err"; msg.textContent = text; }
     fetch(ENDPOINT, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:body })
       .then(function(r){ return r.json(); })
       .then(function(res){
         if (res && res.ok) return done(res.ref);
-        btn.disabled = false; btn.textContent = "أرسل القصة ←"; msg.className = "msg err";
-        if (res && res.err === "code"){ msg.textContent = "رمز الصف غير صحيح. تأكّد منه مع معلمتك."; $("fCode").classList.add("bad"); $("fCode").focus(); }
-        else msg.textContent = "لم تُرسل القصة. تأكّد من الحقول وحاول مرة أخرى؛ مسوّدتك محفوظة.";
+        fail("لم تُرسل القصة. تأكّد من الحقول وحاول مرة أخرى؛ مسوّدتك محفوظة.");
       })
       .catch(function(){
-        // بعض المتصفحات تمنع قراءة الرد؛ نرسل مرة أخرى بلا قراءة الرد
         fetch(ENDPOINT, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:body })
           .then(function(){ done(""); })
-          .catch(function(){ btn.disabled = false; btn.textContent = "أرسل القصة ←"; msg.className = "msg err"; msg.textContent = "تعذّر الاتصال. تأكّد من الإنترنت وحاول مرة أخرى؛ مسوّدتك محفوظة."; });
+          .catch(function(){ fail("تعذّر الاتصال. تأكّد من الإنترنت وحاول مرة أخرى؛ مسوّدتك محفوظة."); });
       });
   });
 
   function done(ref){
-    sent = true; clearTimeout(t);
+    sent = true; clearTimeout(t); clearTimeout(savedT);
     try { localStorage.removeItem(DRAFT); } catch(e){}
     var title = esc($("fTitle").value.trim()), name = esc($("fName").value.trim().split(/\s+/)[0] || "");
-    $("page").innerHTML = '<section class="done"><svg width="110" height="48" viewBox="7 6 300 128" aria-hidden="true" style="color:#165a63"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M287 56 C292 76 285 93 265 101"/><circle cx="225" cy="58" r="13.5"/><path d="M246 71.5 H172"/><circle cx="157" cy="58" r="13.5"/><path d="M170.5 63 C171 86 157 99 135 101"/><circle cx="97" cy="58" r="13.5"/><path d="M110.5 71.5 H52 C40 71.5 33 65 33 52"/></g><rect x="20" y="109" width="286" height="8" rx="4" fill="#c99556"/></svg>'
-      + '<h2>وصلت قصتك' + (name ? ' يا ' + name : '') + '!</h2>'
-      + '<p>«' + title + '» الآن عند المعلمة، تقرؤها وتراجعها قبل أن تجد مكانها على الرف.</p>'
+    $("main").innerHTML = '<section class="done"><div class="wrap">' + document.querySelector(".lock").outerHTML
+      + '<h1>وصلت قصتك' + (name ? ' يا ' + name : '') + '!</h1>'
+      + '<p>«' + title + '» الآن عند المعلمة، تقرؤها وتراجعها قبل أن تأخذ مكانها على الرف.</p>'
       + (ref ? '<div class="ref">' + esc(ref) + '</div><p>احتفظ برقم الطلب هذا إن أردت السؤال عن قصتك.</p>' : '')
-      + '<p style="margin-top:18px"><a class="pill" href="./" style="text-decoration:none">العودة إلى المكتبة</a></p></section>';
-    $("fab").style.display = "none"; $("saveBtn").style.display = "none";
+      + '<p style="margin-top:22px"><a class="btn" href="./">العودة إلى المكتبة</a></p></div></section>';
+    $("fab").style.display = "none";
     window.scrollTo(0, 0);
   }
 })();
