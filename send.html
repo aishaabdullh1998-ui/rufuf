@@ -128,6 +128,9 @@ button{cursor:pointer}
 .issue .fx .act{font-size:13.5px;padding:7px 12px}
 .ok{margin:0;background:#fff;border-radius:14px;padding:14px;font-size:15px;text-align:center}
 .ok b{display:block;font:800 20px var(--round);color:var(--sea)}
+.aist{margin:0;font-size:13.5px;background:#fff;border-radius:12px;padding:8px 12px;color:var(--muted)}
+.aist.on{color:var(--sea);font-weight:600}
+.aist .act{margin-top:6px;padding:5px 10px;font-size:12.5px}
 .chk{border:0;background:var(--coral);color:#fff;border-radius:999px;padding:7px 14px;font:700 14px var(--round);box-shadow:0 3px 0 var(--coral2)}
 .strips .act{padding:6px 12px;font-size:13px;flex:none}
 .worlds{display:flex;flex-wrap:wrap;gap:6px}
@@ -424,18 +427,46 @@ button{cursor:pointer}
     for (var i = 0; i < EMO.length; i++){ if (V.some(function(v){ return EMO[i].keys.indexOf(v) > -1; })) return EMO[i]; }
     return null;
   }
-  var TYC = { "إملاء":"var(--coral2)", "ترقيم":"var(--sea)", "أسلوب":"var(--wood)", "تنبيه":"#d9a520" };
+  var TYC = { "نحو":"#7b6aa6", "إملاء":"var(--coral2)", "ترقيم":"var(--sea)", "أسلوب":"var(--wood)", "تنبيه":"#d9a520" };
   var ignored = {};
+  var ai = { txt:null, list:null, busy:false, fail:"" };
+  function aiMap(txt, L){
+    var cur = 0, res = [];
+    L.forEach(function(x){
+      var i = txt.indexOf(x.wrong, cur); if (i < 0) i = txt.indexOf(x.wrong);
+      if (i < 0) return;
+      res.push({ s:i, e:i + x.wrong.length, w:x.wrong, type:x.type, msg:x.msg, fix:[x.fix], ai:1 }); cur = i + x.wrong.length;
+    });
+    return res;
+  }
   function runCheck(){
-    var txt = ta.value;
-    state.issues = (window.rufufCheck ? window.rufufCheck(txt) : []).map(function(o){ o.raw = txt.slice(o.s, o.e); return o; })
+    var txt = ta.value, loc = window.rufufCheck ? window.rufufCheck(txt) : [], all = loc;
+    if (ai.list && ai.txt === txt){
+      var A = aiMap(txt, ai.list);
+      all = A.concat(loc.filter(function(o){ return !A.some(function(a){ return o.s < a.e && a.s < o.e; }); }));
+      all.sort(function(a, b){ return a.s - b.s; });
+    }
+    state.issues = all.map(function(o){ o.raw = txt.slice(o.s, o.e); return o; })
       .filter(function(o){ return !ignored[o.raw + "|" + o.type]; });
+  }
+  function askAI(){
+    var txt = ta.value; if (!txt.trim() || ai.busy || (ai.txt === txt && ai.list)) return;
+    ai.busy = true; ai.fail = ""; render();
+    fetch(ENDPOINT, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify({ type:"check", tx:txt }) })
+      .then(function(r){ return r.json(); })
+      .then(function(res){ ai.busy = false; if (res && res.ok){ ai.txt = txt; ai.list = res.issues || []; } else ai.fail = (res && res.err) || "ai"; runCheck(); render(); })
+      .catch(function(){ ai.busy = false; ai.fail = "net"; runCheck(); render(); });
   }
   function renderCheck(){
     var v = $("bview"), L = state.issues || [], txt = ta.value;
     var h = '<div class="chkhead"><b>تدقيق قصتك</b><button type="button" class="act soft" data-back="1">→ صندوق الكلمات</button></div>';
+    var smart = ai.list && ai.txt === txt;
+    if (ai.busy) h += '<p class="aist">🔎 المدقّق الذكي يقرأ قصتك… (هذه ملاحظات سريعة إلى أن ينتهي)</p>';
+    else if (smart) h += '<p class="aist on">✓ دقّقها المدقّق الذكي: إملاءً ونحوًا وترقيمًا.</p>';
+    else if (ai.fail) h += '<p class="aist">المدقّق الذكي غير متاح الآن، فهذه ملاحظات المدقّق السريع وحده. <button type="button" class="act soft" data-retry="1">أعد المحاولة</button></p>';
     if (!txt.trim()) h += '<p class="empty">اكتب قصتك أولًا، ثم اضغط «دقّق قصتي».</p>';
-    else if (!L.length) h += '<p class="ok"><b>أحسنت! 🌟</b>لم أجد أخطاء شائعة في الإملاء أو الترقيم.</p>';
+    else if (!L.length) h += smart ? '<p class="ok"><b>أحسنت! 🌟</b>لم يجد المدقّق أخطاء في قصتك.</p>'
+                                   : (ai.busy ? '' : '<p class="ok"><b>لا أخطاء شائعة</b>لم يجد المدقّق السريع أخطاء من الأخطاء الشائعة، لكنه لا يلتقط كلّ شيء.</p>');
     else h += '<p class="fine">وجدتُ ' + AR(L.length) + ' ' + (L.length > 10 ? 'ملاحظة' : 'ملاحظات') + '. راجع كلّ واحدة، وصحّحها إن رأيتها في مكانها.</p>'
       + L.map(function(o, i){
         var a = Math.max(0, o.s - 22), b = Math.min(txt.length, o.e + 22);
@@ -449,7 +480,9 @@ button{cursor:pointer}
   function applyFix(i, j){
     var o = state.issues[i]; if (!o) return;
     if (ta.value.slice(o.s, o.e) !== o.raw){ runCheck(); render(); return; }
+    var keep = ai.list && ai.txt === ta.value;
     ta.value = ta.value.slice(0, o.s) + o.fix[j] + ta.value.slice(o.e);
+    if (keep){ ai.txt = ta.value; if (o.ai){ var k = -1; ai.list.some(function(x, n){ if (x.wrong === o.w){ k = n; return true; } }); if (k > -1) ai.list.splice(k, 1); } }
     wc(); save(true); runCheck(); render();
   }
 
@@ -459,14 +492,20 @@ button{cursor:pointer}
     var v = $("bview"), h = "";
     if (state.mode === "check") return renderCheck();
     if (state.tab === "emo" && !state.q){
-      h += '<div class="emos' + (EM[state.emo] ? ' one' : '') + '">' + EMO.map(function(e){ return '<button type="button" data-emo="' + e.id + '" style="--c:' + e.c + '" aria-pressed="' + (state.emo === e.id) + '"><i></i>' + esc(e.n) + '</button>'; }).join("") + '</div>';
       var E = EM[state.emo];
+      if (!E){
+        var fams = []; EMO.forEach(function(e){ if (fams.indexOf(e.f) < 0) fams.push(e.f); });
+        h += '<p class="fine">' + AR(EMO.length) + ' شعورًا، ولكلّ شعور ' + AR(20) + ' تعبيرًا. اختر شعورًا:</p>';
+        fams.forEach(function(f){ h += '<p class="gt">' + esc(f) + '</p><div class="emos">' + EMO.filter(function(e){ return e.f === f; }).map(function(e){ return '<button type="button" data-emo="' + e.id + '" style="--c:' + e.c + '"><i></i>' + esc(e.n) + '</button>'; }).join("") + '</div>'; });
+      }
       if (E){
+        h += '<div class="chkhead"><span class="fine">' + esc(E.f) + '</span><button type="button" class="act soft" data-emoall="1">→ كلّ المشاعر</button></div>';
+        h += '<div class="emos one">' + EMO.filter(function(e){ return e.f === E.f; }).map(function(e){ return '<button type="button" data-emo="' + e.id + '" style="--c:' + e.c + '" aria-pressed="' + (state.emo === e.id) + '"><i></i>' + esc(e.n) + '</button>'; }).join("") + '</div>';
         var k = 0; state._elist = [];
         h += '<p class="ladt">تعبيرات عن ' + esc(E.n) + '</p>';
         E.g.forEach(function(g){ h += '<p class="gt">' + esc(g.t) + '</p><div class="strips">' + g.x.map(function(x){ state._elist.push(x); return '<div><span>' + esc(x) + '</span><button type="button" class="act" data-eins="' + (k++) + '">أدرِج</button></div>'; }).join("") + '</div>'; });
         h += '<p class="fine">إن كانت بطلة قصتك فتاة، فغيّر الكلمات لتناسبها، مثل: وجهه ← وجهها، احمرّ ← احمرّت.</p>';
-      } else h += '<p class="fine">اختر شعورًا لترى تعبيراته: في الوجه، وفي الجسد، وتشبيهات، وأفعال.</p>';
+      }
       v.innerHTML = h; return;
     }
     if (state.q){
@@ -491,7 +530,7 @@ button{cursor:pointer}
     }
     var l = LD[state.lad], r = l.r[state.rung], mine = state.sel.w;
     if (mine) h += '<p class="mine">كلمتك: <b>' + esc(mine) + '</b>' + (l.o ? ' — اصعد السُّلَّم لكلمة أقوى' : '') + '</p>';
-    var em = EM[state.emo]; if (em && state.tab === "lad") h += '<button type="button" class="emolink" data-emo="' + em.id + '">✨ ' + AR(16) + ' تعبيرًا عن ' + esc(em.n) + ' ←</button>';
+    var em = EM[state.emo]; if (em && state.tab === "lad") h += '<button type="button" class="emolink" data-emo="' + em.id + '">✨ ' + AR(em.g.reduce(function(a, g){ return a + g.x.length; }, 0)) + ' تعبيرًا عن ' + esc(em.n) + ' ←</button>';
     if (state.tab === "lad"){
       h += '<p class="ladt">' + esc(l.t) + '</p>';
       if (l.o && l.r.length <= 6){
@@ -550,9 +589,11 @@ button{cursor:pointer}
 
   $("bview").addEventListener("click", function(e){
     var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.retry){ ai.fail = ""; askAI(); return; }
     if (b.dataset.back){ state.mode = "box"; render(); return; }
     if (b.dataset.fix){ var fj = b.dataset.fix.split(":"); return applyFix(+fj[0], +fj[1]); }
     if (b.dataset.ign){ var oi = state.issues[+b.dataset.ign]; ignored[oi.raw + "|" + oi.type] = 1; runCheck(); render(); return; }
+    if (b.dataset.emoall){ state.emo = null; render(); $("bview").scrollTop = 0; return; }
     if (b.dataset.emo){ state.emo = b.dataset.emo; state.tab = "emo"; state.q = ""; $("bq").value = ""; render(); $("bview").scrollTop = 0; return; }
     if (b.dataset.eins != null && state._elist) return putText(state._elist[+b.dataset.eins], false);
     if (b.dataset.world){ state.world = b.dataset.world; render(); return; }
@@ -564,7 +605,7 @@ button{cursor:pointer}
     if (b.dataset.ins != null && state._list) return putText(state._list[+b.dataset.ins], false);
   });
   $("tEmo").onclick = function(){ state.mode = "box"; state.tab = "emo"; state.q = ""; $("bq").value = ""; render(); };
-  $("chkBtn").onclick = function(){ state.mode = "check"; runCheck(); render(); openBox(); if (innerWidth > 900) $("box").scrollIntoView({ block:"nearest", behavior:"smooth" }); };
+  $("chkBtn").onclick = function(){ state.mode = "check"; runCheck(); render(); askAI(); openBox(); if (innerWidth > 900) $("box").scrollIntoView({ block:"nearest", behavior:"smooth" }); };
   $("tLad").onclick = function(){ state.mode = "box"; state.tab = "lad"; state.q = ""; $("bq").value = ""; render(); };
   $("tExp").onclick = function(){ state.mode = "box"; state.tab = "exp"; state.q = ""; $("bq").value = ""; render(); };
   $("tAll").onclick = function(){ state.mode = "box"; state.tab = "all"; state.q = ""; $("bq").value = ""; render(); };
