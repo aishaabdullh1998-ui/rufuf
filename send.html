@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>أرسل قصتك — مكتبة رفوف</title>
+<meta name="description" content="أرسل قصتك إلى مكتبة رفوف، ومعك صندوق كلمات يساعدك على الكتابة.">
+<meta name="theme-color" content="#cfe3e2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Readex+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sea:#165a63; --sea2:#0d3c42; --coral:#e98b6d; --coral2:#c9694c; --sun:#ffcf6e; --foam:#9cc5c0; --mint:#cfe3e2; --sand:#f4e8d8; --sand2:#efddc9; --wood:#c99556;
+  --cream:#fcf8f2; --paper:#fffdf8; --ink:#2b2a28; --muted:#6c6660; --ok:#2f8a4a; --err:#b8412c;
+  --round:"Baloo Bhaijaan 2","Readex Pro",system-ui,sans-serif; --sans:"Readex Pro",system-ui,sans-serif; --hand:"Aref Ruqaa",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--sand);color:var(--ink);font:400 17px/1.75 var(--sans);overflow-x:hidden}
+a{color:var(--sea)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:var(--mint);padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.top .in{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--sea);font:800 30px/1 var(--round)}
+.logo svg{width:64px;height:28px;color:var(--sea)}
+.top h1{margin:0;flex:1;font:700 18px/1.3 var(--round);color:var(--sea)}
+.saved{font-size:13px;color:var(--sea);opacity:0;transition:opacity .3s;white-space:nowrap}
+.saved.on{opacity:.85}
+.pill{border:0;border-radius:999px;padding:9px 16px;font:700 15px/1 var(--round);background:var(--sea);color:#fff;white-space:nowrap}
+.pill.soft{background:#fff;color:var(--sea)}
+
+/* layout */
+.page{max-width:1240px;margin:0 auto;padding:22px max(16px,env(safe-area-inset-right,0px)) 120px max(16px,env(safe-area-inset-left,0px));display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:start}
+.intro{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.intro h2{margin:0;font:800 clamp(30px,5vw,44px)/1.15 var(--round);color:var(--sea)}
+.intro p{margin:4px 0 0;color:var(--muted);max-width:640px}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.steps span{font:600 13px/1 var(--sans);padding:7px 12px;border-radius:999px;background:var(--paper);color:var(--muted)}
+.steps span b{color:var(--coral2)}
+form{display:flex;flex-direction:column;gap:18px;min-width:0}
+fieldset{margin:0;border:0;padding:22px 24px;background:var(--paper);border-radius:24px;box-shadow:0 6px 18px rgba(22,90,99,.07);min-width:0}
+fieldset>*:not(legend){clear:both}
+legend{float:right;width:100%;padding:0;margin:0 0 12px;font:800 22px/1.3 var(--round);color:var(--sea);display:flex;align-items:center;gap:10px}
+legend i{font-style:normal;width:34px;height:34px;border-radius:50%;background:var(--c,var(--coral));color:#fff;display:grid;place-items:center;font:800 17px/1 var(--round);flex:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f label,.lbl{font:600 15px/1.4 var(--sans)}
+.f label em,.lbl em{font-style:normal;color:var(--coral2)}
+.f small{color:var(--muted);font-size:13px;line-height:1.5}
+input[type=text],input[type=tel],select,textarea{width:100%;border:2px solid var(--sand2);border-radius:14px;background:#fff;padding:10px 14px;font-size:17px;min-height:48px}
+input:focus,select:focus,textarea:focus{border-color:var(--sea);outline:none}
+.bad{border-color:var(--err)!important;background:#fff6f3!important}
+.title-in{font:700 24px/1.4 var(--round)!important}
+.paperwrap{position:relative}
+#fText{min-height:420px;resize:vertical;font:400 21px/44px var(--sans);padding:12px 18px;
+  background:#fff repeating-linear-gradient(to bottom,transparent 0,transparent 43px,#ece0cf 43px,#ece0cf 44px);background-attachment:local}
+.textbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;font-size:14px;color:var(--muted)}
+.textbar b{color:var(--sea)}
+.hint{display:inline-flex;align-items:center;gap:6px;background:var(--mint);color:var(--sea);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+textarea.small{min-height:96px;resize:vertical;line-height:1.7}
+.consent{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:var(--sand);margin-top:12px}
+.consent input{width:26px;height:26px;margin:2px 0 0;flex:none;accent-color:var(--sea)}
+.consent label{font-size:15.5px;line-height:1.7}
+.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}
+.sendrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.big{border:0;border-radius:999px;padding:16px 34px 14px;font:800 21px/1 var(--round);background:var(--coral);color:#fff;box-shadow:0 5px 0 var(--coral2)}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 var(--coral2)}
+.big[disabled]{opacity:.6;cursor:wait}
+.msg{font-size:15px;font-weight:600}
+.msg.err{color:var(--err)}
+.alt{font-size:13px;color:var(--muted)}
+
+/* word box */
+.box{position:sticky;top:76px;background:var(--paper);border-radius:24px;box-shadow:0 12px 32px rgba(22,90,99,.16);overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 96px)}
+.boxhead{background:var(--coral);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.boxhead b{font:800 23px/1.2 var(--round)}
+.boxhead small{display:block;font-size:12.5px;opacity:.95;font-weight:500}
+.x{width:40px;height:40px;border-radius:12px;border:0;background:rgba(255,255,255,.25);color:#fff;font-size:22px;display:none}
+.boxbody{padding:14px 16px 18px;overflow:auto;display:flex;flex-direction:column;gap:12px}
+.bsearch{display:flex;gap:6px}
+.bsearch input{min-height:44px;font-size:16px}
+.tabs{display:flex;gap:6px}
+.tabs button{flex:1;min-height:42px;border:0;border-radius:12px;background:var(--mint);color:var(--sea);font:600 15px/1 var(--sans)}
+.tabs button[aria-selected=true]{background:var(--sea);color:#fff}
+.mine{font-size:14px;color:var(--muted)}
+.mine b{color:var(--coral2);font-size:16px}
+.ladt{font:800 20px/1.3 var(--round);color:var(--sea);margin:0}
+.rungs{display:flex;gap:6px;flex-wrap:wrap}
+.rung{flex:1 1 0;min-width:64px;min-height:46px;border:0;border-radius:12px;background:var(--sand2);font:700 17px/1.2 var(--round);padding:6px 4px}
+.rung[aria-pressed=true]{background:var(--coral);color:#fff}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:-6px}
+.mean{margin:0;font-weight:600;font-size:16px;line-height:1.6}
+.ex{margin:0;font-size:14.5px;color:var(--muted)}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.act{border:0;border-radius:12px;padding:9px 14px;font:700 14.5px/1.2 var(--round);background:var(--sea);color:#fff}
+.act.soft{background:var(--mint);color:var(--sea)}
+.note{font-size:12.5px;color:var(--muted);margin:0}
+.exl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.exl li{display:flex;align-items:center;gap:8px;background:var(--sand);border-radius:12px;padding:8px 10px 8px 12px}
+.exl li span{flex:1;font:700 19px/1.5 var(--hand);color:var(--ink)}
+.exl .act{padding:6px 12px;font-size:13.5px}
+.worlds{display:flex;flex-wrap:wrap;gap:6px}
+.worlds button{border:0;border-radius:999px;padding:7px 12px;font:600 14px/1.2 var(--sans);background:color-mix(in srgb,var(--c) 18%,#fff);color:var(--ink);border:2px solid color-mix(in srgb,var(--c) 45%,#fff)}
+.worlds button[aria-pressed=true]{background:var(--c);color:#fff;border-color:var(--c)}
+.lads{display:flex;flex-direction:column;gap:6px}
+.lads button{display:flex;flex-direction:column;align-items:flex-start;text-align:right;border:0;border-radius:14px;padding:9px 12px;background:var(--sand);gap:2px}
+.lads button b{font:700 17px/1.2 var(--round);color:var(--sea)}
+.lads button span{font-size:13.5px;color:var(--muted)}
+.empty{font-size:14.5px;color:var(--muted);background:var(--sand);border-radius:14px;padding:12px 14px;margin:0}
+.fab{display:none}
+
+/* done */
+.done{grid-column:1/-1;background:var(--paper);border-radius:28px;padding:34px 28px;text-align:center;box-shadow:0 6px 18px rgba(22,90,99,.07)}
+.done h2{margin:6px 0;font:800 36px/1.2 var(--round);color:var(--sea)}
+.done .ref{display:inline-block;margin:10px 0;padding:8px 18px;border-radius:14px;background:var(--mint);font:800 22px/1.2 var(--round);color:var(--sea);letter-spacing:.04em;direction:ltr}
+.done p{color:var(--muted);max-width:560px;margin:6px auto}
+
+@media (max-width:980px){
+  .page{grid-template-columns:minmax(0,1fr)}
+  .box{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:40;border-radius:24px 24px 0 0;max-height:72vh;transform:translateY(105%);transition:transform .3s ease;padding-bottom:env(safe-area-inset-bottom,0px)}
+  .box.open{transform:none}
+  .x{display:grid;place-items:center}
+  .fab{display:flex;position:fixed;z-index:30;bottom:max(16px,env(safe-area-inset-bottom,0px));left:max(16px,env(safe-area-inset-left,0px));align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 18px;background:var(--coral);color:#fff;font:800 17px/1 var(--round);box-shadow:0 6px 18px rgba(201,105,76,.45)}
+  .grid2{grid-template-columns:minmax(0,1fr)}
+  fieldset{padding:18px 16px}
+  .top h1{display:none}
+  .top .in{justify-content:space-between}
+  .saved{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="in">
+    <a class="logo" href="./" aria-label="مكتبة رفوف — الرئيسية">
+      <svg viewBox="7 6 300 128" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M287 56 C292 76 285 93 265 101"/><circle cx="225" cy="58" r="13.5"/><path d="M246 71.5 H172"/><circle cx="157" cy="58" r="13.5"/><path d="M170.5 63 C171 86 157 99 135 101"/><circle cx="97" cy="58" r="13.5"/><path d="M110.5 71.5 H52 C40 71.5 33 65 33 52"/></g><rect x="219" y="14" width="13" height="23" rx="2.5" fill="#ffcf6e" transform="rotate(-9 225 26)"/><rect x="91" y="14" width="13" height="23" rx="2.5" fill="#e98b6d" transform="rotate(7 97 26)"/><rect x="20" y="109" width="286" height="8" rx="4" fill="#c99556"/></svg>
+    </a>
+    <h1>أرسل قصتك</h1>
+    <span class="saved" id="saved" role="status">حُفظت المسوّدة على هذا الجهاز ✓</span>
+    <button class="pill" type="button" id="saveBtn">حفظ المسوّدة</button>
+  </div>
+</header>
+
+<main class="page" id="page">
+  <div class="intro">
+    <div>
+      <h2>قصّتك التالية… على الرف</h2>
+      <p>اكتب قصتك هنا، وما تكتبه يُحفظ تلقائيًا على جهازك فتكمله متى شئت. وإن احتجت كلمة أجمل، فاختر أي كلمة في قصتك ليفتح لك <b>صندوق الكلمات</b> سُلَّمها وتعبيراتها.</p>
+    </div>
+    <div class="steps" aria-hidden="true"><span><b>١</b> عن الكاتب</span><span><b>٢</b> القصة</span><span><b>٣</b> موافقة وليّ الأمر</span></div>
+  </div>
+
+  <form id="form" novalidate>
+    <fieldset style="--c:var(--sea)">
+      <legend><i>١</i>عن الكاتب</legend>
+      <div class="grid2">
+        <div class="f"><label for="fName">اسم الطالب الثلاثي <em>*</em></label><input type="text" id="fName" maxlength="60" autocomplete="off" required></div>
+        <div class="f"><label for="fGrade">الصف <em>*</em></label>
+          <select id="fGrade" required><option value="">اختر الصف</option><option>الأول</option><option>الثاني</option><option>الثالث</option><option>الرابع</option><option>الخامس</option><option>السادس</option><option>السابع فما فوق</option></select></div>
+        <div class="f"><label for="fSchool">المدرسة</label><input type="text" id="fSchool" maxlength="80"></div>
+        <div class="f"><label for="fCode">رمز الصف <em>*</em></label><input type="text" id="fCode" maxlength="20" autocomplete="off" required><small>تعطيك إياه معلمتك.</small></div>
+      </div>
+    </fieldset>
+
+    <fieldset style="--c:var(--coral)">
+      <legend><i>٢</i>القصة</legend>
+      <div class="f"><label for="fTitle">عنوان القصة <em>*</em></label><input class="title-in" type="text" id="fTitle" maxlength="80" required></div>
+      <div class="f" style="margin-top:14px">
+        <label for="fText">نص القصة <em>*</em></label>
+        <div class="paperwrap"><textarea id="fText" required placeholder="كان يا ما كان…"></textarea></div>
+        <div class="textbar"><span>عدد الكلمات: <b id="wc">٠</b></span><span class="hint">✨ اختر كلمة في قصتك لتفتح صندوق الكلمات</span></div>
+      </div>
+      <div class="grid2" style="margin-top:14px">
+        <div class="f"><label for="fIdeas">أفكار للرسومات <small>(اختياري)</small></label><textarea class="small" id="fIdeas" maxlength="1500" placeholder="كيف تتخيّل أبطال قصتك والمكان؟"></textarea></div>
+        <div class="f"><label for="fAbout">عرّفنا بنفسك <small>(اختياري، لصفحة الكاتب)</small></label><textarea class="small" id="fAbout" maxlength="600" placeholder="هواياتي، ولماذا كتبت هذه القصة…"></textarea></div>
+      </div>
+    </fieldset>
+
+    <fieldset style="--c:var(--wood)">
+      <legend><i>٣</i>موافقة وليّ الأمر</legend>
+      <div class="grid2">
+        <div class="f"><label for="fParent">اسم وليّ الأمر <em>*</em></label><input type="text" id="fParent" maxlength="60" required></div>
+        <div class="f"><label for="fContact">رقم للتواصل <small>(اختياري)</small></label><input type="tel" id="fContact" maxlength="20" inputmode="tel" dir="ltr"><small>لا يظهر في الموقع، ويصل إلى المعلمة فقط.</small></div>
+      </div>
+      <div class="consent">
+        <input type="checkbox" id="fOk" required>
+        <label for="fOk">أوافق بصفتي وليّ أمر الطالب على إرسال هذه القصة إلى مكتبة رفوف، وعلى نشرها باسمه بعد مراجعة المعلمة، وأقرّ بأنها من تأليفه.</label>
+      </div>
+    </fieldset>
+
+    <div class="hp" aria-hidden="true"><label for="fHp">اتركه فارغًا</label><input type="text" id="fHp" tabindex="-1" autocomplete="off"></div>
+
+    <div class="sendrow">
+      <button class="big" type="submit" id="sendBtn">أرسل القصة ←</button>
+      <span class="msg" id="msg" role="status" aria-live="polite"></span>
+    </div>
+    <p class="alt">تصل القصة إلى المعلمة لتراجعها قبل النشر. وإن واجهتك مشكلة، يمكنك <a href="https://docs.google.com/forms/d/e/1FAIpQLSdI0xPUOlzXS_yQZuTaqn8QybDI5Ttw38DxTa26rnrskWf_0Q/viewform?usp=header" target="_blank" rel="noopener">الإرسال عبر النموذج</a>.</p>
+  </form>
+
+  <aside class="box" id="box" aria-label="صندوق الكلمات">
+    <div class="boxhead">
+      <div><b>صندوق الكلمات</b><small>من «سُلَّم المعنى»: كلمات أدقّ وتعبيرات أجمل</small></div>
+      <button class="x" type="button" id="boxX" aria-label="إغلاق صندوق الكلمات">×</button>
+    </div>
+    <div class="boxbody">
+      <div class="bsearch"><input type="text" id="bq" placeholder="ابحث: خائف، يركض، مطر…" aria-label="ابحث في صندوق الكلمات"></div>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tLad" aria-selected="true">سُلَّم الكلمة</button>
+        <button type="button" role="tab" id="tExp" aria-selected="false">تعبيرات</button>
+        <button type="button" role="tab" id="tAll" aria-selected="false">الحقول</button>
+      </div>
+      <div id="bview"></div>
+    </div>
+  </aside>
+</main>
+
+<button class="fab" type="button" id="fab" aria-controls="box">✨ صندوق الكلمات</button>
+
+<script>
+(function(){
+  /* رابط تطبيق Apps Script نفسه الذي يستقبل آراء القرّاء */
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbw__C-2zTYZRL9nQdgl6SVPvdLyyBSpgNZsAG8ZB5ftQ-ss8k1NxiHukOhCrTZj2Lc_9w/exec";
+  var DRAFT = "rufuf-story-draft-v1";
+  var $ = function(id){ return document.getElementById(id); };
+  var AR = function(n){ return String(n).replace(/\d/g, function(d){ return "٠١٢٣٤٥٦٧٨٩"[d]; }); };
+  var FIELDS = ["fName","fGrade","fSchool","fCode","fTitle","fText","fIdeas","fAbout","fParent","fContact"];
+  var words = function(v){ return (String(v).trim().match(/\S+/g) || []).length; };
+
+  /* ---------------- المسوّدة ---------------- */
+  function load(){ try { return JSON.parse(localStorage.getItem(DRAFT) || "null"); } catch(e){ return null; } }
+  var sent = false;
+  function save(show){
+    if (sent || !$("fName")) return;
+    var d = {}; FIELDS.forEach(function(k){ d[k] = $(k).value; }); d.fOk = $("fOk").checked; d.at = Date.now();
+    try { localStorage.setItem(DRAFT, JSON.stringify(d)); if (show) flash(); } catch(e){}
+  }
+  var savedT; function flash(){ $("saved").classList.add("on"); $("saveBtn").textContent = "حُفظت ✓"; clearTimeout(savedT); savedT = setTimeout(function(){ $("saved").classList.remove("on"); $("saveBtn").textContent = "حفظ المسوّدة"; }, 2200); }
+  var d0 = load();
+  if (d0){ FIELDS.forEach(function(k){ if (d0[k] != null) $(k).value = d0[k]; }); $("fOk").checked = !!d0.fOk; }
+  var t; document.getElementById("form").addEventListener("input", function(e){
+    if (e.target.classList) e.target.classList.remove("bad");
+    clearTimeout(t); t = setTimeout(function(){ save(true); }, 700); wc();
+  });
+  $("fOk").addEventListener("change", function(){ save(true); });
+  $("saveBtn").onclick = function(){ save(true); };
+  function wc(){ $("wc").textContent = AR(words($("fText").value)); }
+  wc();
+
+  /* ---------------- صندوق الكلمات ---------------- */
+  var DATA = null, WD = {}, LD = {}, IDX = [];
+  var state = { tab:"lad", lad:null, rung:0, world:null, sel:{s:0,e:0,w:""}, q:"" };
+  var norm = function(s){ return (s||"").replace(/[ً-ْٰـ]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ؤ/g,"و").replace(/ئ/g,"ي").replace(/ة/g,"ه").replace(/[^ء-ي ]/g,"").trim(); };
+  function variants(q){ var v = [q], add = function(x){ if (v.indexOf(x) < 0) v.push(x); };
+    ["وال","فال","بال","كال","لل","ال","و","ف"].forEach(function(p){ if (q.indexOf(p) === 0 && q.length - p.length >= 2) add(q.slice(p.length)); });
+    v.slice().forEach(function(x){ ["ي","ت","ن","ا","سي","ست"].forEach(function(p){ if (x.indexOf(p) === 0 && x.length - p.length >= 3) add(x.slice(p.length)); }); });
+    v.slice().forEach(function(x){ ["ون","ين","ات","ان","وا","ها","ه","ت","ي","ا"].forEach(function(s){ if (x.slice(-s.length) === s && x.length - s.length >= 2) add(x.slice(0, -s.length)); }); });
+    return v; }
+  function find(raw){
+    var q = norm(raw); if (!q) return [];
+    var V = variants(q), hits = [];
+    IDX.forEach(function(e){
+      var keys = [e.n].concat(variants(e.n), e.al), s = 0;
+      if (keys.indexOf(q) > -1) s = 100;
+      else if (V.some(function(v){ return keys.indexOf(v) > -1; })) s = 90;
+      else if (q.length >= 2 && e.n.indexOf(q) === 0) s = 70;
+      else if (q.length >= 3 && e.al.some(function(a){ return a.indexOf(q) > -1; })) s = 60;
+      else if (q.length >= 3 && e.m.indexOf(q) > -1) s = 30;
+      if (s) hits.push({e:e, s:s});
+    });
+    return hits.sort(function(a,b){ return b.s - a.s; }).slice(0, 8).map(function(h){ return h.e; });
+  }
+  fetch("words.json").then(function(r){ return r.json(); }).then(function(d){
+    DATA = d; d.worlds.forEach(function(w){ WD[w.id] = w; });
+    d.lads.forEach(function(l){ LD[l.id] = l; l.r.forEach(function(r, i){
+      IDX.push({ l:l.id, i:i, w:r[0], n:norm(r[0]), m:norm(r[1] + " " + r[2]), al:(r[3]||"").split("،").map(norm).filter(Boolean) });
+    }); });
+    render();
+  }).catch(function(){ $("bview").innerHTML = '<p class="empty">تعذّر تحميل صندوق الكلمات الآن. يمكنك متابعة الكتابة والإرسال.</p>'; });
+
+  var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); };
+
+  function render(){
+    if (!DATA) return;
+    ["tLad","tExp","tAll"].forEach(function(id){ $(id).setAttribute("aria-selected", String(state.tab === {tLad:"lad",tExp:"exp",tAll:"all"}[id])); });
+    var v = $("bview"), h = "";
+    if (state.q){
+      var hits = find(state.q);
+      h += hits.length ? '<div class="lads">' + hits.map(function(e){ var l = LD[e.l]; return '<button type="button" data-go="' + e.l + '" data-i="' + e.i + '"><b>' + esc(e.w) + '</b><span>' + esc(l.t) + ' · ' + esc(l.r[e.i][1]) + '</span></button>'; }).join("") + '</div>'
+                       : '<p class="empty">لم أجد «' + esc(state.q) + '» في الصندوق. جرّب كلمة قريبة منها، أو تصفّح الحقول.</p>';
+      v.innerHTML = h; return;
+    }
+    if (state.tab === "all"){
+      h += '<div class="worlds">' + DATA.worlds.map(function(w){ return '<button type="button" data-world="' + w.id + '" style="--c:' + w.c + '" aria-pressed="' + (state.world === w.id) + '">' + esc(w.n) + '</button>'; }).join("") + '</div>';
+      if (state.world){
+        h += '<div class="lads">' + DATA.lads.filter(function(l){ return l.w === state.world; }).map(function(l){
+          return '<button type="button" data-go="' + l.id + '" data-i="0"><b>' + esc(l.t) + '</b><span>' + l.r.map(function(r){ return esc(r[0]); }).join(" · ") + '</span></button>'; }).join("") + '</div>';
+      } else h += '<p class="note">اختر حقلًا لترى سلالم كلماته.</p>';
+      v.innerHTML = h; return;
+    }
+    if (!state.lad){
+      v.innerHTML = '<p class="empty">ظلّل كلمة في قصتك (أو ضع المؤشر عليها)، مثل: <b>خاف</b> أو <b>ركض</b> أو <b>مطر</b>، فيظهر لك سُلَّمها هنا. أو ابحث في الأعلى، أو تصفّح <b>الحقول</b>.</p>';
+      return;
+    }
+    var l = LD[state.lad], r = l.r[state.rung], mine = state.sel.w;
+    if (mine) h += '<p class="mine">كلمتك: <b>' + esc(mine) + '</b></p>';
+    if (state.tab === "lad"){
+      h += '<p class="ladt">' + esc(l.t) + '</p>';
+      h += '<div class="rungs">' + l.r.map(function(x, i){ return '<button type="button" class="rung" data-rung="' + i + '" aria-pressed="' + (i === state.rung) + '">' + esc(x[0]) + '</button>'; }).join("") + '</div>';
+      if (l.o) h += '<div class="ends"><span>أخفّ</span><span>أقوى</span></div>';
+      h += '<p class="mean">' + esc(r[0]) + ': ' + esc(r[1]) + '</p><p class="ex">مثال: ' + esc(r[2]) + '</p>';
+      h += '<div class="acts">' + (mine ? '<button type="button" class="act" data-do="replace">ضعها مكان «' + esc(mine) + '»</button>' : '') + '<button type="button" class="act soft" data-do="insert">أدرجها في القصة</button></div>';
+      h += '<p class="note">قد تحتاج أن تغيّر آخر الكلمة لتناسب جملتك، مثل: فزِع ← فزِعت.</p>';
+    } else {
+      var ex = (DATA.expr[l.id] || [])[state.rung] || [], all = (DATA.expr[l.id] || []).reduce(function(a, b){ return a.concat(b); }, []);
+      var list = ex.length ? ex : all;
+      h += '<p class="ladt">تعبيرات: ' + esc(r[0]) + '</p>';
+      h += list.length ? '<ul class="exl">' + list.map(function(t, i){ return '<li><span>' + esc(t) + '</span><button type="button" class="act" data-ins="' + i + '">أدرِج</button></li>'; }).join("") + '</ul>'
+                       : '<p class="empty">لا تعبيرات لهذا السُّلَّم بعد. جرّب سُلَّمًا آخر.</p>';
+      state._list = list;
+    }
+    v.innerHTML = h;
+  }
+
+  /* اختيار كلمة من النص */
+  var ta = $("fText");
+  function pick(){
+    var s = ta.selectionStart, e = ta.selectionEnd, val = ta.value;
+    if (s === e){ // الكلمة التي عند المؤشر
+      var a = s, b = s;
+      while (a > 0 && /\S/.test(val[a-1])) a--;
+      while (b < val.length && /\S/.test(val[b])) b++;
+      s = a; e = b;
+    }
+    var w = val.slice(s, e).trim().replace(/^[«"(]+|[».,،؛:!؟?")]+$/g, "");
+    if (!w || w.split(/\s+/).length > 3) return;
+    var off = val.slice(s, e).indexOf(w); if (off > 0) s += off; e = s + w.length;
+    state.sel = { s:s, e:e, w:w };
+    var hit = find(w)[0];
+    if (hit){ state.lad = hit.l; state.rung = hit.i; if (state.tab === "all") state.tab = "lad"; state.q = ""; $("bq").value = ""; }
+    else if (state.tab !== "all"){ state.lad = null; }
+    render();
+  }
+  ["select","mouseup","keyup","touchend"].forEach(function(ev){ ta.addEventListener(ev, function(e){ if (e.type === "keyup" && !/Arrow|Home|End|Shift/.test(e.key)) return; setTimeout(pick, 0); }); });
+
+  function putText(str, replace){
+    var s = replace ? state.sel.s : (ta.selectionStart || state.sel.e || ta.value.length), e = replace ? state.sel.e : (ta.selectionEnd || s), val = ta.value;
+    if (!replace){ var before = val.slice(0, s); if (before && !/\s$/.test(before)) str = " " + str; if (val.slice(e) && !/^\s/.test(val.slice(e))) str = str + " "; }
+    ta.value = val.slice(0, s) + str + val.slice(e);
+    var c = s + str.length; ta.focus(); ta.setSelectionRange(c, c);
+    state.sel = { s:s, e:s + str.length, w: replace ? str : state.sel.w };
+    wc(); save(true); closeBox();
+  }
+
+  $("bview").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.world){ state.world = b.dataset.world; render(); return; }
+    if (b.dataset.go){ state.lad = b.dataset.go; state.rung = +b.dataset.i || 0; state.tab = "lad"; state.q = ""; $("bq").value = ""; render(); return; }
+    if (b.dataset.rung){ state.rung = +b.dataset.rung; render(); return; }
+    var l = state.lad && LD[state.lad];
+    if (b.dataset.do === "replace" && l) return putText(l.r[state.rung][0], true);
+    if (b.dataset.do === "insert" && l) return putText(l.r[state.rung][0], false);
+    if (b.dataset.ins != null && state._list) return putText(state._list[+b.dataset.ins], false);
+  });
+  $("tLad").onclick = function(){ state.tab = "lad"; state.q = ""; $("bq").value = ""; render(); };
+  $("tExp").onclick = function(){ state.tab = "exp"; state.q = ""; $("bq").value = ""; render(); };
+  $("tAll").onclick = function(){ state.tab = "all"; state.q = ""; $("bq").value = ""; render(); };
+  $("bq").addEventListener("input", function(){ state.q = this.value.trim(); render(); });
+
+  /* الصندوق على الهاتف */
+  var box = $("box");
+  function openBox(){ box.classList.add("open"); }
+  function closeBox(){ box.classList.remove("open"); }
+  $("fab").onclick = function(){ pick(); openBox(); };
+  $("boxX").onclick = closeBox;
+
+  /* ---------------- الإرسال ---------------- */
+  $("form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var msg = $("msg"); msg.className = "msg"; msg.textContent = "";
+    var miss = ["fName","fGrade","fCode","fTitle","fText","fParent"].filter(function(k){ return !$(k).value.trim(); });
+    miss.forEach(function(k){ $(k).classList.add("bad"); });
+    if (miss.length){ msg.className = "msg err"; msg.textContent = "أكمل الحقول المعلَّمة بالأحمر."; $(miss[0]).focus(); return; }
+    if (words($("fText").value) < 30){ msg.className = "msg err"; msg.textContent = "القصة قصيرة جدًا؛ اكتب ٣٠ كلمة على الأقل."; $("fText").focus(); return; }
+    if (!$("fOk").checked){ msg.className = "msg err"; msg.textContent = "نحتاج موافقة وليّ الأمر قبل الإرسال."; $("fOk").focus(); return; }
+    var data = { type:"story", hp:$("fHp").value, n:$("fName").value.trim(), g:$("fGrade").value, sc:$("fSchool").value.trim(), cc:$("fCode").value.trim(),
+      ti:$("fTitle").value.trim(), tx:$("fText").value.trim(), il:$("fIdeas").value.trim(), ab:$("fAbout").value.trim(),
+      pn:$("fParent").value.trim(), pc:$("fContact").value.trim(), ok:true };
+    var btn = $("sendBtn"); btn.disabled = true; btn.textContent = "جارٍ الإرسال…";
+    var body = JSON.stringify(data);
+    fetch(ENDPOINT, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:body })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if (res && res.ok) return done(res.ref);
+        btn.disabled = false; btn.textContent = "أرسل القصة ←"; msg.className = "msg err";
+        if (res && res.err === "code"){ msg.textContent = "رمز الصف غير صحيح. تأكّد منه مع معلمتك."; $("fCode").classList.add("bad"); $("fCode").focus(); }
+        else msg.textContent = "لم تُرسل القصة. تأكّد من الحقول وحاول مرة أخرى؛ مسوّدتك محفوظة.";
+      })
+      .catch(function(){
+        // بعض المتصفحات تمنع قراءة الرد؛ نرسل مرة أخرى بلا قراءة الرد
+        fetch(ENDPOINT, { method:"POST", mode:"no-cors", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:body })
+          .then(function(){ done(""); })
+          .catch(function(){ btn.disabled = false; btn.textContent = "أرسل القصة ←"; msg.className = "msg err"; msg.textContent = "تعذّر الاتصال. تأكّد من الإنترنت وحاول مرة أخرى؛ مسوّدتك محفوظة."; });
+      });
+  });
+
+  function done(ref){
+    sent = true; clearTimeout(t);
+    try { localStorage.removeItem(DRAFT); } catch(e){}
+    var title = esc($("fTitle").value.trim()), name = esc($("fName").value.trim().split(/\s+/)[0] || "");
+    $("page").innerHTML = '<section class="done"><svg width="110" height="48" viewBox="7 6 300 128" aria-hidden="true" style="color:#165a63"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M287 56 C292 76 285 93 265 101"/><circle cx="225" cy="58" r="13.5"/><path d="M246 71.5 H172"/><circle cx="157" cy="58" r="13.5"/><path d="M170.5 63 C171 86 157 99 135 101"/><circle cx="97" cy="58" r="13.5"/><path d="M110.5 71.5 H52 C40 71.5 33 65 33 52"/></g><rect x="20" y="109" width="286" height="8" rx="4" fill="#c99556"/></svg>'
+      + '<h2>وصلت قصتك' + (name ? ' يا ' + name : '') + '!</h2>'
+      + '<p>«' + title + '» الآن عند المعلمة، تقرؤها وتراجعها قبل أن تجد مكانها على الرف.</p>'
+      + (ref ? '<div class="ref">' + esc(ref) + '</div><p>احتفظ برقم الطلب هذا إن أردت السؤال عن قصتك.</p>' : '')
+      + '<p style="margin-top:18px"><a class="pill" href="./" style="text-decoration:none">العودة إلى المكتبة</a></p></section>';
+    $("fab").style.display = "none"; $("saveBtn").style.display = "none";
+    window.scrollTo(0, 0);
+  }
+})();
+</script>
+</body>
+</html>
