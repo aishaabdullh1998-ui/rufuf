@@ -247,7 +247,7 @@ button{cursor:pointer}
 <text x="200" y="70" text-anchor="start" direction="rtl" style="font:800 46px 'Baloo Bhaijaan 2',sans-serif" fill="#165a63">أرسل قصتك</text>
 <text x="200" y="100" text-anchor="start" direction="rtl" style="font:600 15px Readex Pro,sans-serif;letter-spacing:.5px" fill="#c9694c">من دفترك إلى الرف</text>
 </svg></h1>
-      <p>اكتب قصتك على هذا الدفتر، وما تكتبه يُحفظ وحده على جهازك. وإن احتجت كلمة أجمل، اختر أي كلمة في قصتك فيفتح لك صندوق الكلمات سُلَّمها.</p>
+      <p>اكتب قصتك على هذا الدفتر، وما تكتبه يُحفظ وحده على جهازك. وإن احتجت تعبيرًا أجمل عن مشاعر أبطالك، فافتح صندوق التعبيرات، ثم دقّق قصتك قبل الإرسال.</p>
     </div>
     <ol class="steps" aria-label="الخطوات">
       <li><i style="--c:var(--coral)">١</i>دفتر القصة</li>
@@ -270,14 +270,14 @@ button{cursor:pointer}
         </div>
         <div class="nbfoot">
           <span>عدد الكلمات: <b id="wc">٠</b></span>
-          <span class="hint">✨ اختر كلمة في قصتك لتفتح صندوق الكلمات</span>
+          <span class="hint">✨ اختر كلمة شعور في قصتك (مثل: خاف، فرح) لتظهر تعبيراتها</span>
           <button type="button" class="chk" id="chkBtn">✓ دقّق قصتي</button>
           <span><span id="saved" role="status"></span> <button type="button" class="tiny" id="saveBtn">حفظ المسوّدة</button></span>
         </div>
       </div>
     </div>
 
-    <aside class="note" id="box" aria-label="صندوق الكلمات">
+    <aside class="note" id="box" aria-label="صندوق التعبيرات">
       <div class="nhead"><h2><svg viewBox="0 0 120 120" aria-hidden="true"><g>
 <rect x="8" y="98" width="104" height="9" rx="4.5" fill="#c99556"/>
 <rect x="14" y="40" width="20" height="58" rx="4" fill="#165a63" transform="rotate(-6 24 98)"/>
@@ -288,15 +288,9 @@ button{cursor:pointer}
 <path d="M75 55v20M65 65h20" stroke="#e98b6d" stroke-width="4.5" stroke-linecap="round"/>
 <rect x="92" y="46" width="18" height="52" rx="4" fill="#ffcf6e" transform="rotate(8 101 98)"/>
 <path d="M100 22l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#ffcf6e"/>
-</g></svg>صندوق الكلمات</h2><button class="x" type="button" id="boxX" aria-label="إغلاق صندوق الكلمات">×</button></div>
-      <p class="nsub">من «سُلَّم المعنى»: كلمات أدقّ وتعبيرات أجمل</p>
-      <input class="bq" type="text" id="bq" placeholder="ابحث: خائف، يركض، مطر…" aria-label="ابحث في صندوق الكلمات">
-      <div class="tabs" role="tablist">
-        <button type="button" role="tab" id="tLad" aria-selected="true">سُلَّم الكلمة</button>
-        <button type="button" role="tab" id="tExp" aria-selected="false">تعبيرات</button>
-        <button type="button" role="tab" id="tEmo" aria-selected="false">مشاعر</button>
-        <button type="button" role="tab" id="tAll" aria-selected="false">الحقول</button>
-      </div>
+</g></svg>صندوق التعبيرات</h2><button class="x" type="button" id="boxX" aria-label="إغلاق صندوق التعبيرات">×</button></div>
+      <p class="nsub">تعبيرات عن ٧٠ شعورًا تجعل قصتك أجمل</p>
+      <input class="bq" type="text" id="bq" placeholder="ابحث: خوف، فرح، قلبه، كالبركان…" aria-label="ابحث في صندوق التعبيرات">
       <div id="bview"></div>
     </aside>
   </div>
@@ -351,7 +345,7 @@ button{cursor:pointer}
 <path d="M75 55v20M65 65h20" stroke="#e98b6d" stroke-width="4.5" stroke-linecap="round"/>
 <rect x="92" y="46" width="18" height="52" rx="4" fill="#ffcf6e" transform="rotate(8 101 98)"/>
 <path d="M100 22l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#ffcf6e"/>
-</g></svg>صندوق الكلمات</button>
+</g></svg>صندوق التعبيرات</button>
 
 <script src="checker.js"></script>
 <script>
@@ -387,7 +381,7 @@ button{cursor:pointer}
 
   /* ---------------- صندوق الكلمات ---------------- */
   var DATA = null, WD = {}, LD = {}, IDX = [];
-  var state = { tab:"lad", lad:null, rung:0, mineR:-1, world:null, sel:{s:0,e:0,w:""}, q:"" };
+  var state = { tab:"emo", lad:null, rung:0, mineR:-1, world:null, sel:{s:0,e:0,w:""}, q:"" };
   var norm = function(s){ return (s||"").replace(/[ً-ْٰـ]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ؤ/g,"و").replace(/ئ/g,"ي").replace(/ة/g,"ه").replace(/[^ء-ي ]/g,"").trim(); };
   function variants(q){ var v = [q], add = function(x){ if (v.indexOf(x) < 0) v.push(x); };
     ["وال","فال","بال","كال","لل","ال","و","ف"].forEach(function(p){ if (q.indexOf(p) === 0 && q.length - p.length >= 2) add(q.slice(p.length)); });
@@ -408,7 +402,7 @@ button{cursor:pointer}
     });
     return hits.sort(function(a,b){ return b.s - a.s; }).slice(0, 8).map(function(h){ return h.e; });
   }
-  fetch("words.json").then(function(r){ return r.json(); }).then(function(d){
+  false && fetch("words.json").then(function(r){ return r.json(); }).then(function(d){
     DATA = d; d.worlds.forEach(function(w){ WD[w.id] = w; });
     d.lads.forEach(function(l){ LD[l.id] = l; l.r.forEach(function(r, i){
       IDX.push({ l:l.id, i:i, w:r[0], n:norm(r[0]), m:norm(r[1] + " " + r[2]), al:(r[3]||"").split("،").map(norm).filter(Boolean) });
@@ -459,7 +453,7 @@ button{cursor:pointer}
   }
   function renderCheck(){
     var v = $("bview"), L = state.issues || [], txt = ta.value;
-    var h = '<div class="chkhead"><b>تدقيق قصتك</b><button type="button" class="act soft" data-back="1">→ صندوق الكلمات</button></div>';
+    var h = '<div class="chkhead"><b>تدقيق قصتك</b><button type="button" class="act soft" data-back="1">→ صندوق التعبيرات</button></div>';
     var smart = ai.list && ai.txt === txt;
     if (ai.busy) h += '<p class="aist">🔎 المدقّق الذكي يقرأ قصتك… (هذه ملاحظات سريعة إلى أن ينتهي)</p>';
     else if (smart) h += '<p class="aist on">✓ دقّقها المدقّق الذكي: إملاءً ونحوًا وترقيمًا.</p>';
@@ -487,8 +481,8 @@ button{cursor:pointer}
   }
 
   function render(){
-    if (!DATA) return;
-    ["tLad","tExp","tEmo","tAll"].forEach(function(id){ $(id).setAttribute("aria-selected", String(state.mode !== "check" && state.tab === {tLad:"lad",tExp:"exp",tEmo:"emo",tAll:"all"}[id])); });
+    if (!EMO.length && state.mode !== "check") return;
+    [].forEach(function(id){ $(id).setAttribute("aria-selected", String(state.mode !== "check" && state.tab === {tLad:"lad",tExp:"exp",tEmo:"emo",tAll:"all"}[id])); });
     var v = $("bview"), h = "";
     if (state.mode === "check") return renderCheck();
     if (state.tab === "emo" && !state.q){
@@ -509,6 +503,14 @@ button{cursor:pointer}
       v.innerHTML = h; return;
     }
     if (state.q){
+      var qn = norm(state.q), qv = variants(qn), found = [];
+      var emos = EMO.filter(function(e){ return qv.some(function(v){ return e.keys.indexOf(v) > -1; }) || (qn.length > 1 && norm(e.n).indexOf(qn) > -1); });
+      if (qn.length > 1) EMO.forEach(function(e){ e.g.forEach(function(g){ g.x.forEach(function(x){ if (found.length < 30 && norm(x).indexOf(qn) > -1) found.push(x); }); }); });
+      state._elist = found;
+      v.innerHTML = (emos.length ? '<div class="emos">' + emos.map(function(e){ return '<button type="button" data-emo="' + e.id + '" style="--c:' + e.c + '"><i></i>' + esc(e.n) + '</button>'; }).join("") + '</div>' : '')
+        + (found.length ? '<p class="gt">تعبيرات فيها «' + esc(state.q) + '»</p><div class="strips">' + found.map(function(x, k){ return '<div><span>' + esc(x) + '</span><button type="button" class="act" data-eins="' + k + '">أدرِج</button></div>'; }).join("") + '</div>' : '')
+        + (!emos.length && !found.length ? '<p class="empty">لم أجد «' + esc(state.q) + '». جرّب كلمة أخرى، مثل: خوف، فرح، قلبه، كالبحر.</p>' : '');
+      return;
       var hits = find(state.q), qe = findEmo(state.q);
       var eh = qe ? '<button type="button" class="emolink" data-emo="' + qe.id + '">✨ تعبيرات عن ' + esc(qe.n) + ' ←</button>' : '';
       if (qe && !hits.length){ v.innerHTML = eh; return; }
@@ -568,8 +570,8 @@ button{cursor:pointer}
     var off = val.slice(s, e).indexOf(w); if (off > 0) s += off; e = s + w.length;
     if (state.lad && state.sel.s === s && state.sel.e === e && state.sel.w === w) return;
     state.sel = { s:s, e:e, w:w };
-    var hit = find(w)[0], he = findEmo(w);
-    state.emo = he ? he.id : (hit ? null : state.emo);
+    var hit = null, he = findEmo(w);
+    if (he){ state.emo = he.id; state.tab = "emo"; state.q = ""; $("bq").value = ""; }
     if (hit){ state.lad = hit.l; state.rung = hit.i; state.mineR = hit.i; if (state.tab === "all") state.tab = "lad"; state.q = ""; $("bq").value = ""; }
     else if (state.tab !== "all"){ state.lad = null; }
     if (he && !hit) state.tab = "emo";
@@ -578,7 +580,7 @@ button{cursor:pointer}
   ["select","mouseup","keyup","touchend"].forEach(function(ev){ ta.addEventListener(ev, function(e){ if (e.type === "keyup" && !/Arrow|Home|End|Shift/.test(e.key)) return; setTimeout(pick, 0); }); });
 
   function putText(str, replace){
-    var s = replace ? state.sel.s : (ta.selectionStart || state.sel.e || ta.value.length), e = replace ? state.sel.e : (ta.selectionEnd || s), val = ta.value;
+    var s = replace ? state.sel.s : (ta.selectionEnd || state.sel.e || ta.value.length), e = replace ? state.sel.e : s, val = ta.value;
     if (!replace){ var before = val.slice(0, s); if (before && !/\s$/.test(before)) str = " " + str; if (val.slice(e) && !/^\s/.test(val.slice(e))) str = str + " "; }
     ta.value = val.slice(0, s) + str + val.slice(e);
     var c = s + str.length; ta.focus(); ta.setSelectionRange(c, c);
@@ -604,12 +606,8 @@ button{cursor:pointer}
     if (b.dataset.do === "insert" && l) return putText(l.r[state.rung][0], false);
     if (b.dataset.ins != null && state._list) return putText(state._list[+b.dataset.ins], false);
   });
-  $("tEmo").onclick = function(){ state.mode = "box"; state.tab = "emo"; state.q = ""; $("bq").value = ""; render(); };
-  $("chkBtn").onclick = function(){ state.mode = "check"; runCheck(); render(); askAI(); openBox(); if (innerWidth > 900) $("box").scrollIntoView({ block:"nearest", behavior:"smooth" }); };
-  $("tLad").onclick = function(){ state.mode = "box"; state.tab = "lad"; state.q = ""; $("bq").value = ""; render(); };
-  $("tExp").onclick = function(){ state.mode = "box"; state.tab = "exp"; state.q = ""; $("bq").value = ""; render(); };
-  $("tAll").onclick = function(){ state.mode = "box"; state.tab = "all"; state.q = ""; $("bq").value = ""; render(); };
-  $("bq").addEventListener("keydown", function(e){ if (e.key === "Enter") e.preventDefault(); });
+    $("chkBtn").onclick = function(){ state.mode = "check"; runCheck(); render(); askAI(); openBox(); if (innerWidth > 900) $("box").scrollIntoView({ block:"nearest", behavior:"smooth" }); };
+        $("bq").addEventListener("keydown", function(e){ if (e.key === "Enter") e.preventDefault(); });
   $("bq").addEventListener("input", function(){ state.q = this.value.trim(); state.mode = "box"; render(); });
 
   var box = $("box");
