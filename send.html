@@ -448,7 +448,7 @@ button{cursor:pointer}
     ai.busy = true; ai.fail = ""; render();
     fetch(ENDPOINT, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify({ type:"check", tx:txt }) })
       .then(function(r){ return r.json(); })
-      .then(function(res){ ai.busy = false; if (res && res.ok){ ai.txt = txt; ai.list = res.issues || []; } else ai.fail = (res && res.err) || "ai"; runCheck(); render(); })
+      .then(function(res){ ai.busy = false; if (res && res.ok){ ai.txt = txt; ai.list = res.issues || []; } else ai.fail = (res && res.err) || "old"; runCheck(); render(); })
       .catch(function(){ ai.busy = false; ai.fail = "net"; runCheck(); render(); });
   }
   function renderCheck(){
@@ -457,7 +457,7 @@ button{cursor:pointer}
     var smart = ai.list && ai.txt === txt;
     if (ai.busy) h += '<p class="aist">🔎 المدقّق الذكي يقرأ قصتك… (هذه ملاحظات سريعة إلى أن ينتهي)</p>';
     else if (smart) h += '<p class="aist on">✓ دقّقها المدقّق الذكي: إملاءً ونحوًا وترقيمًا.</p>';
-    else if (ai.fail) h += '<p class="aist">المدقّق الذكي غير متاح الآن، فهذه ملاحظات المدقّق السريع وحده. <button type="button" class="act soft" data-retry="1">أعد المحاولة</button></p>';
+    else if (ai.fail) h += '<p class="aist">المدقّق الذكي غير متاح الآن، فهذه ملاحظات المدقّق السريع وحده. <small style="opacity:.6">(' + ({ old:"رمز ١", nokey:"رمز ٢", ai:"رمز ٣", limit:"رمز ٤", net:"رمز ٥" }[ai.fail] || ai.fail) + ')</small> <button type="button" class="act soft" data-retry="1">أعد المحاولة</button></p>';
     if (!txt.trim()) h += '<p class="empty">اكتب قصتك أولًا، ثم اضغط «دقّق قصتي».</p>';
     else if (!L.length) h += smart ? '<p class="ok"><b>أحسنت! 🌟</b>لم يجد المدقّق أخطاء في قصتك.</p>'
                                    : (ai.busy ? '' : '<p class="ok"><b>لا أخطاء شائعة</b>لم يجد المدقّق السريع أخطاء من الأخطاء الشائعة، لكنه لا يلتقط كلّ شيء.</p>');
