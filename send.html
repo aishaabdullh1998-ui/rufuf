@@ -247,7 +247,7 @@ button{cursor:pointer}
 <text x="200" y="70" text-anchor="start" direction="rtl" style="font:800 46px 'Baloo Bhaijaan 2',sans-serif" fill="#165a63">أرسل قصتك</text>
 <text x="200" y="100" text-anchor="start" direction="rtl" style="font:600 15px Readex Pro,sans-serif" fill="#c9694c">من دفترك إلى الرف</text>
 </svg></h1>
-      <p>اكتب قصتك على هذا الدفتر، وما تكتبه يُحفظ وحده على جهازك. وإن احتجت تعبيرًا أجمل عن مشاعر أبطالك، فافتح صندوق التعبيرات، ثم دقّق قصتك قبل الإرسال.</p>
+      <p>اكتب قصتك على هذا الدفتر، وما تكتبه يُحفظ وحده على جهازك. وإن احتجت تعبيرًا أجمل عن مشاعر أبطالك، فافتح صندوق التعبيرات.</p>
     </div>
     <ol class="steps" aria-label="الخطوات">
       <li><i style="--c:var(--coral)">١</i>دفتر القصة</li>
@@ -271,7 +271,6 @@ button{cursor:pointer}
         <div class="nbfoot">
           <span>عدد الكلمات: <b id="wc">٠</b></span>
           <span class="hint">✨ اختر كلمة شعور في قصتك (مثل: خاف، فرح) لتظهر تعبيراتها</span>
-          <button type="button" class="chk" id="chkBtn">✓ دقّق قصتي</button>
           <span><span id="saved" role="status"></span> <button type="button" class="tiny" id="saveBtn">حفظ المسوّدة</button></span>
         </div>
       </div>
@@ -347,7 +346,6 @@ button{cursor:pointer}
 <path d="M100 22l2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#ffcf6e"/>
 </g></svg>صندوق التعبيرات</button>
 
-<script src="checker.js"></script>
 <script>
 (function(){
   /* رابط تطبيق Apps Script نفسه الذي يستقبل آراء القرّاء */
@@ -606,7 +604,7 @@ button{cursor:pointer}
     if (b.dataset.do === "insert" && l) return putText(l.r[state.rung][0], false);
     if (b.dataset.ins != null && state._list) return putText(state._list[+b.dataset.ins], false);
   });
-    $("chkBtn").onclick = function(){ state.mode = "check"; runCheck(); render(); askAI(); openBox(); if (innerWidth > 900) $("box").scrollIntoView({ block:"nearest", behavior:"smooth" }); };
+    if ($("chkBtn")) $("chkBtn").onclick = function(){ state.mode = "check"; runCheck(); render(); askAI(); openBox(); if (innerWidth > 900) $("box").scrollIntoView({ block:"nearest", behavior:"smooth" }); };
         $("bq").addEventListener("keydown", function(e){ if (e.key === "Enter") e.preventDefault(); });
   $("bq").addEventListener("input", function(){ state.q = this.value.trim(); state.mode = "box"; render(); });
 
