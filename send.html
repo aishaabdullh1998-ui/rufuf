@@ -421,7 +421,7 @@ button{cursor:pointer}
     for (var i = 0; i < EMO.length; i++){ if (V.some(function(v){ return EMO[i].keys.indexOf(v) > -1; })) return EMO[i]; }
     return null;
   }
-  var TYC = { "نحو":"#7b6aa6", "إملاء":"var(--coral2)", "ترقيم":"var(--sea)", "أسلوب":"var(--wood)", "تنبيه":"#d9a520" };
+  var TYC = { "نحو":"#7b6aa6", "إملاء":"var(--coral2)", "ترقيم":"var(--sea)", "أسلوب":"var(--coral2)", "تنبيه":"#d9a520" };
   var ignored = {};
   var ai = { txt:null, list:null, busy:false, fail:"" };
   function aiMap(txt, L){
@@ -456,11 +456,11 @@ button{cursor:pointer}
     var h = '<div class="chkhead"><b>تدقيق قصتك</b><button type="button" class="act soft" data-back="1">→ صندوق التعبيرات</button></div>';
     var smart = ai.list && ai.txt === txt;
     if (ai.busy) h += '<p class="aist">🔎 المدقّق الذكي يقرأ قصتك… (هذه ملاحظات سريعة إلى أن ينتهي)</p>';
-    else if (smart) h += '<p class="aist on">✓ دقّقها المدقّق الذكي: إملاءً ونحوًا وترقيمًا.</p>';
+    else if (smart) h += '<p class="aist on">✓ دقّقها المدقّق الذكي: أسلوبًا وترقيمًا.</p>';
     else if (ai.fail) h += '<p class="aist">المدقّق الذكي غير متاح الآن، فهذه ملاحظات المدقّق السريع وحده. <small style="opacity:.6">(' + ({ old:"رمز ١", nokey:"رمز ٢", ai:"رمز ٣", limit:"رمز ٤", net:"رمز ٥" }[ai.fail] || ai.fail) + ')</small> <button type="button" class="act soft" data-retry="1">أعد المحاولة</button></p>';
     if (!txt.trim()) h += '<p class="empty">اكتب قصتك أولًا، ثم اضغط «دقّق قصتي».</p>';
-    else if (!L.length) h += smart ? '<p class="ok"><b>أحسنت! 🌟</b>لم يجد المدقّق أخطاء في قصتك.</p>'
-                                   : (ai.busy ? '' : '<p class="ok"><b>لا أخطاء شائعة</b>لم يجد المدقّق السريع أخطاء من الأخطاء الشائعة، لكنه لا يلتقط كلّ شيء.</p>');
+    else if (!L.length) h += smart ? '<p class="ok"><b>أحسنت! 🌟</b>لم يجد المدقّق ملاحظات على أسلوب قصتك وترقيمها.</p>'
+                                   : (ai.busy ? '' : '<p class="ok"><b>لا ملاحظات</b>لم يجد المدقّق السريع ملاحظات في الأسلوب أو الترقيم، لكنه لا يلتقط كلّ شيء.</p>');
     else h += '<p class="fine">وجدتُ ' + AR(L.length) + ' ' + (L.length > 10 ? 'ملاحظة' : 'ملاحظات') + '. راجع كلّ واحدة، وصحّحها إن رأيتها في مكانها.</p>'
       + L.map(function(o, i){
         var a = Math.max(0, o.s - 22), b = Math.min(txt.length, o.e + 22);
@@ -468,7 +468,7 @@ button{cursor:pointer}
         return '<div class="issue" style="--c:' + (TYC[o.type] || 'var(--sea)') + '"><span class="ty">' + o.type + '</span><div class="ctx">' + ctx + '</div><p>' + esc(o.msg) + '</p><div class="fx">'
           + o.fix.map(function(f, j){ return '<button type="button" class="act" data-fix="' + i + ':' + j + '">' + (f.trim() ? 'صحّحها: ' + esc(f.trim()) : 'صحّحها') + '</button>'; }).join("")
           + '<button type="button" class="act soft" data-ign="' + i + '">تجاهل</button></div></div>'; }).join("");
-    h += '<p class="fine">المدقّق يلتقط الأخطاء الشائعة فقط، والمعلمة تراجع القصة كاملة قبل النشر.</p>';
+    h += '<p class="fine">المدقّق ينبّهك إلى الأسلوب وعلامات الترقيم، والمعلّمة تراجع القصة كاملة قبل النشر.</p>';
     v.innerHTML = h;
   }
   function applyFix(i, j){
